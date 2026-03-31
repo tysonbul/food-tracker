@@ -25,7 +25,7 @@ export default function WelcomeModal({ onClose }: WelcomeModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div className="absolute inset-0" onClick={handleClose} />
-      <div className="relative w-full h-full md:h-auto md:max-h-[90vh] md:max-w-lg md:rounded-2xl bg-app-bg overflow-y-auto">
+      <div className="relative w-full h-full md:h-auto md:max-h-[90vh] md:max-w-lg md:rounded-2xl bg-app-bg overflow-y-auto overflow-x-hidden">
         {/* Header */}
         <div className="sticky top-0 z-10 bg-app-bg/95 backdrop-blur-sm border-b border-app-border px-5 py-4 flex items-center justify-between">
           <div>

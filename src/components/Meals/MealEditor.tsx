@@ -66,7 +66,7 @@ export default function MealEditor({ meal, onClose }: MealEditorProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-app-bg">
+    <div className="fixed inset-0 z-50 flex flex-col bg-app-bg overflow-x-hidden">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-app-border">
         <button onClick={onClose} className="p-1 text-app-text-muted hover:text-app-text">

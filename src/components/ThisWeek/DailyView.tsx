@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react'
 import { ChevronDown, Trash2 } from 'lucide-react'
 import { FoodEntry, MealType, Meal } from '../../types'
 import { CATEGORY_META } from '../../data/foodDatabase'
-import { getWeekEnd } from '../../utils/week'
+import { getWeekEnd, getToday } from '../../utils/week'
 
 interface DailyViewProps {
   weekStart: string
@@ -79,15 +79,23 @@ interface DayData {
 export default function DailyView({ weekStart, entries, meals, onDeleteEntry }: DailyViewProps) {
   const weekEnd = getWeekEnd(weekStart)
 
+  // Helper to format a Date as YYYY-MM-DD in local time
+  const toLocalDateStr = (d: Date): string => {
+    const year = d.getFullYear()
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    return `${year}-${month}-${day}`
+  }
+
   // Build list of all days in the week (up to today)
   const days = useMemo(() => {
-    const today = new Date().toISOString().slice(0, 10)
+    const today = getToday()
     const result: DayData[] = []
     const d = new Date(weekEnd + 'T00:00:00')
     const startDate = new Date(weekStart + 'T00:00:00')
 
     while (d >= startDate) {
-      const dateStr = d.toISOString().slice(0, 10)
+      const dateStr = toLocalDateStr(d)
       if (dateStr <= today) {
         const dayEntries = entries.filter((e) => e.date === dateStr)
         const sections = MEAL_TYPE_ORDER
@@ -108,8 +116,7 @@ export default function DailyView({ weekStart, entries, meals, onDeleteEntry }: 
   const entryToMeal = useMemo(() => findMatchingMeals(entries, meals), [entries, meals])
 
   // Expand today by default
-  const today = new Date().toISOString().slice(0, 10)
-  const [expandedDays, setExpandedDays] = useState<Set<string>>(new Set([today]))
+  const [expandedDays, setExpandedDays] = useState<Set<string>>(() => new Set([getToday()]))
 
   const toggleDay = (date: string) => {
     setExpandedDays((prev) => {

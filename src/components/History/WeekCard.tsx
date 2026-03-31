@@ -8,14 +8,6 @@ interface WeekCardProps {
   onSelect: () => void
 }
 
-function getProgressColor(points: number): string {
-  if (points >= 30) return 'bg-yellow-500/20 border-yellow-500/30'
-  if (points >= 20) return 'bg-green-500/15 border-green-500/25'
-  if (points >= 10) return 'bg-orange-500/15 border-orange-500/25'
-  if (points > 0) return 'bg-red-500/10 border-red-500/20'
-  return 'bg-app-surface border-app-border'
-}
-
 function getBarColor(points: number): string {
   if (points >= 30) return 'bg-yellow-500'
   if (points >= 20) return 'bg-green-500'
@@ -29,7 +21,7 @@ export default function WeekCard({ summary, isCurrent, onSelect }: WeekCardProps
   return (
     <button
       onClick={onSelect}
-      className={`w-full text-left rounded-2xl border p-4 transition-all hover:brightness-110 ${getProgressColor(summary.totalPoints)}`}
+      className="w-full text-left rounded-2xl border p-4 transition-all bg-app-surface border-app-border hover:border-app-accent/30"
     >
       <div className="flex items-center justify-between mb-2.5">
         <div>

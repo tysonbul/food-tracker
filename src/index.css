@@ -49,3 +49,18 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #b8b2a6;
 }
+
+/* Hide scrollbar on horizontal chip rows */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ensure date inputs don't overflow their container */
+input[type="date"] {
+  max-width: 100%;
+  min-width: 0;
+}

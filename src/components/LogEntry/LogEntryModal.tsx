@@ -107,7 +107,7 @@ export default function LogEntryModal({ onClose, onSave, onCreateMeal }: LogEntr
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-app-bg">
+    <div className="fixed inset-0 z-50 flex flex-col bg-app-bg overflow-x-hidden">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-app-border">
         <button onClick={onClose} className="p-1 text-app-text-muted hover:text-app-text">
@@ -128,19 +128,19 @@ export default function LogEntryModal({ onClose, onSave, onCreateMeal }: LogEntr
       </div>
 
       {/* Date picker + meal type */}
-      <div className="px-4 py-2.5 border-b border-app-border space-y-2.5">
+      <div className="px-4 py-2.5 border-b border-app-border space-y-2.5 overflow-hidden">
         <input
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          className="w-full px-3 py-2 bg-app-surface border border-app-border rounded-xl text-sm text-app-text focus:outline-none focus:border-app-accent"
+          className="w-full max-w-full px-3 py-2 bg-app-surface border border-app-border rounded-xl text-sm text-app-text focus:outline-none focus:border-app-accent"
         />
-        <div className="flex gap-2">
+        <div className="grid grid-cols-4 gap-1.5">
           {mealTypes.map((mt) => (
             <button
               key={mt.value}
               onClick={() => setMealType(mealType === mt.value ? undefined : mt.value)}
-              className={`flex-1 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              className={`py-1.5 rounded-lg text-xs font-medium transition-all truncate px-1 ${
                 mealType === mt.value
                   ? 'bg-app-accent text-white'
                   : 'bg-app-surface border border-app-border text-app-text-muted hover:text-app-text'
