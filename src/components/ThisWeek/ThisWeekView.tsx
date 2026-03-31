@@ -18,8 +18,8 @@ export default function ThisWeekView() {
     <div className="p-5 max-w-lg mx-auto space-y-5 pb-6">
       {/* Week label */}
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-semibold text-white">This Week</h1>
-        <span className="text-xs text-gray-500">
+        <h1 className="text-lg font-semibold text-app-text">This Week</h1>
+        <span className="text-xs text-app-text-muted">
           {formatWeekRange(currentWeekSummary.weekStart, currentWeekSummary.weekEnd)}
         </span>
       </div>
@@ -32,13 +32,13 @@ export default function ThisWeekView() {
         {/* Quick stats row */}
         <div className="flex gap-6 text-center">
           <div>
-            <p className="text-lg font-semibold text-white">{currentWeekSummary.uniquePlantCount}</p>
-            <p className="text-[10px] text-gray-500 uppercase tracking-wider">unique this week</p>
+            <p className="text-lg font-semibold text-app-text">{currentWeekSummary.uniquePlantCount}</p>
+            <p className="text-[10px] text-app-text-muted uppercase tracking-wider">unique this week</p>
           </div>
           <div className="w-px bg-app-border" />
           <div>
-            <p className="text-lg font-semibold text-white">{totalUniquePlants}</p>
-            <p className="text-[10px] text-gray-500 uppercase tracking-wider">all-time unique</p>
+            <p className="text-lg font-semibold text-app-text">{totalUniquePlants}</p>
+            <p className="text-[10px] text-app-text-muted uppercase tracking-wider">all-time unique</p>
           </div>
         </div>
       </div>
@@ -49,8 +49,8 @@ export default function ThisWeekView() {
           onClick={() => setTab('score')}
           className={`flex-1 py-2 rounded-lg text-xs font-medium transition-all ${
             tab === 'score'
-              ? 'bg-app-accent text-[#0a0d14]'
-              : 'text-gray-400 hover:text-white'
+              ? 'bg-app-accent text-white'
+              : 'text-app-text-muted hover:text-app-text'
           }`}
         >
           Score
@@ -59,8 +59,8 @@ export default function ThisWeekView() {
           onClick={() => setTab('daily')}
           className={`flex-1 py-2 rounded-lg text-xs font-medium transition-all ${
             tab === 'daily'
-              ? 'bg-app-accent text-[#0a0d14]'
-              : 'text-gray-400 hover:text-white'
+              ? 'bg-app-accent text-white'
+              : 'text-app-text-muted hover:text-app-text'
           }`}
         >
           Daily

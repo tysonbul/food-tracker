@@ -53,33 +53,33 @@ export default function HistoryView() {
 
   return (
     <div className="p-5 max-w-lg mx-auto space-y-5 pb-6">
-      <h1 className="text-lg font-semibold text-white">History</h1>
+      <h1 className="text-lg font-semibold text-app-text">History</h1>
 
       {/* Summary stats */}
       <div className="grid grid-cols-2 gap-3">
         <div className="bg-app-surface border border-app-border rounded-2xl p-4">
-          <p className="text-2xl font-bold text-white">{streak.current}</p>
-          <p className="text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">
+          <p className="text-2xl font-bold text-app-text">{streak.current}</p>
+          <p className="text-[10px] text-app-text-muted uppercase tracking-wider mt-0.5">
             week streak
           </p>
         </div>
         <div className="bg-app-surface border border-app-border rounded-2xl p-4">
-          <p className="text-2xl font-bold text-white">{streak.longest}</p>
-          <p className="text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">
+          <p className="text-2xl font-bold text-app-text">{streak.longest}</p>
+          <p className="text-[10px] text-app-text-muted uppercase tracking-wider mt-0.5">
             best streak
           </p>
         </div>
         <div className="bg-app-surface border border-app-border rounded-2xl p-4">
-          <p className="text-2xl font-bold text-white">
+          <p className="text-2xl font-bold text-app-text">
             {avgPoints % 1 === 0 ? avgPoints : avgPoints.toFixed(1)}
           </p>
-          <p className="text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">
+          <p className="text-[10px] text-app-text-muted uppercase tracking-wider mt-0.5">
             avg / week
           </p>
         </div>
         <div className="bg-app-surface border border-app-border rounded-2xl p-4">
-          <p className="text-2xl font-bold text-white">{totalUniquePlants}</p>
-          <p className="text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">
+          <p className="text-2xl font-bold text-app-text">{totalUniquePlants}</p>
+          <p className="text-[10px] text-app-text-muted uppercase tracking-wider mt-0.5">
             unique ever
           </p>
         </div>
@@ -87,7 +87,7 @@ export default function HistoryView() {
 
       {/* Weeks at goal note */}
       {weeksAtGoal > 0 && (
-        <p className="text-xs text-gray-500 text-center">
+        <p className="text-xs text-app-text-muted text-center">
           Hit 30+ in {weeksAtGoal} of {weeks.length} week{weeks.length !== 1 ? 's' : ''}
         </p>
       )}
@@ -106,7 +106,7 @@ export default function HistoryView() {
 
       {weeks.length === 0 && (
         <div className="bg-app-surface border border-app-border rounded-2xl p-6 text-center">
-          <p className="text-gray-500 text-sm">No history yet. Start logging foods!</p>
+          <p className="text-app-text-secondary text-sm">No history yet. Start logging foods!</p>
         </div>
       )}
     </div>

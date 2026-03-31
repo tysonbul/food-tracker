@@ -91,19 +91,19 @@ export default function FoodSearch({
     <div className="flex flex-col h-full">
       {/* Search bar */}
       <div className="relative px-4 pb-3">
-        <Search size={16} className="absolute left-7 top-1/2 -translate-y-1/2 text-gray-500 -mt-1.5" />
+        <Search size={16} className="absolute left-7 top-1/2 -translate-y-1/2 text-app-text-muted -mt-1.5" />
         <input
           type="text"
           placeholder="Search foods..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full pl-9 pr-9 py-2.5 bg-app-surface border border-app-border rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-app-accent"
+          className="w-full pl-9 pr-9 py-2.5 bg-app-surface border border-app-border rounded-xl text-sm text-app-text placeholder-app-text-muted focus:outline-none focus:border-app-accent"
           autoFocus
         />
         {query && (
           <button
             onClick={() => setQuery('')}
-            className="absolute right-7 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 -mt-1.5"
+            className="absolute right-7 top-1/2 -translate-y-1/2 text-app-text-muted hover:text-app-text-secondary -mt-1.5"
           >
             <X size={16} />
           </button>
@@ -117,8 +117,8 @@ export default function FoodSearch({
             onClick={() => setActiveCategory(activeCategory === 'recent' ? null : 'recent')}
             className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
               activeCategory === 'recent'
-                ? 'bg-app-accent text-gray-900'
-                : 'bg-app-surface border border-app-border text-gray-400 hover:text-white'
+                ? 'bg-app-accent text-white'
+                : 'bg-app-surface border border-app-border text-app-text-muted hover:text-app-text'
             }`}
           >
             ⏱ Recent
@@ -132,8 +132,8 @@ export default function FoodSearch({
             }}
             className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
               activeCategory === 'meals'
-                ? 'bg-app-accent text-gray-900'
-                : 'bg-app-surface border border-app-border text-gray-400 hover:text-white'
+                ? 'bg-app-accent text-white'
+                : 'bg-app-surface border border-app-border text-app-text-muted hover:text-app-text'
             }`}
           >
             🍽 Meals
@@ -148,12 +148,12 @@ export default function FoodSearch({
               onClick={() => setActiveCategory(active ? null : cat)}
               className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                 active
-                  ? 'bg-app-accent text-gray-900'
-                  : 'bg-app-surface border border-app-border text-gray-400 hover:text-white'
+                  ? 'bg-app-accent text-white'
+                  : 'bg-app-surface border border-app-border text-app-text-muted hover:text-app-text'
               }`}
             >
               {meta.emoji} {meta.label}
-              <span className={`ml-0.5 ${active ? 'text-[#0a0d14]/60' : 'text-gray-600'}`}>
+              <span className={`ml-0.5 ${active ? 'text-white/60' : 'text-app-muted'}`}>
                 {getPointValue(cat) === 0.25 ? '¼' : getPointValue(cat) === 0 ? '0' : getPointValue(cat)}
               </span>
             </button>
@@ -168,7 +168,7 @@ export default function FoodSearch({
           <>
             {filteredMeals.length === 0 && (
               <div className="text-center py-8">
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-app-text-secondary">
                   {query ? 'No matching meals found' : 'No saved meals yet'}
                 </p>
                 {!query && onCreateMeal && (
@@ -200,8 +200,8 @@ export default function FoodSearch({
                       className="w-full flex items-center justify-between px-3 py-3 text-left"
                     >
                       <div className="min-w-0">
-                        <span className="text-sm font-medium text-white">{meal.name}</span>
-                        <span className="text-xs text-gray-500 ml-2">
+                        <span className="text-sm font-medium text-app-text">{meal.name}</span>
+                        <span className="text-xs text-app-text-muted ml-2">
                           {meal.items.length} item{meal.items.length !== 1 ? 's' : ''}
                         </span>
                       </div>
@@ -220,7 +220,7 @@ export default function FoodSearch({
                           className={`shrink-0 ml-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                             allSelected
                               ? 'bg-app-accent/15 text-app-accent border border-app-accent/30'
-                              : 'bg-app-accent text-[#0a0d14]'
+                              : 'bg-app-accent text-white'
                           }`}
                         >
                           {allSelected ? 'Added' : `Add ${newItems.length} new`}
@@ -248,14 +248,14 @@ export default function FoodSearch({
                                   className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all ${
                                     isSelected
                                       ? 'bg-app-accent border-app-accent'
-                                      : 'border-gray-600'
+                                      : 'border-app-border'
                                   }`}
                                 >
                                   {isSelected && (
                                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                                       <path
                                         d="M2.5 6L5 8.5L9.5 3.5"
-                                        stroke="#0a0d14"
+                                        stroke="white"
                                         strokeWidth="2"
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
@@ -263,16 +263,16 @@ export default function FoodSearch({
                                     </svg>
                                   )}
                                 </div>
-                                <span className={`truncate ${isSelected ? 'text-white' : 'text-gray-300'}`}>
+                                <span className={`truncate ${isSelected ? 'text-app-text' : 'text-app-text-secondary'}`}>
                                   {food.name}
                                 </span>
                                 {alreadyLogged && (
-                                  <span className="text-[10px] text-gray-600 bg-gray-800/50 rounded px-1 shrink-0">
+                                  <span className="text-[10px] text-app-muted bg-app-tag-bg/70 rounded px-1 shrink-0">
                                     logged
                                   </span>
                                 )}
                               </div>
-                              <span className="text-xs text-gray-600 shrink-0 ml-2">
+                              <span className="text-xs text-app-muted shrink-0 ml-2">
                                 {CATEGORY_META[food.category].emoji}
                               </span>
                             </button>
@@ -287,7 +287,7 @@ export default function FoodSearch({
             {onCreateMeal && (
               <button
                 onClick={onCreateMeal}
-                className="w-full mt-3 py-2.5 rounded-xl border border-dashed border-app-border text-sm text-gray-400 hover:text-app-accent hover:border-app-accent/40 transition-all"
+                className="w-full mt-3 py-2.5 rounded-xl border border-dashed border-app-border text-sm text-app-text-muted hover:text-app-accent hover:border-app-accent/40 transition-all"
               >
                 + Create New Meal
               </button>
@@ -297,7 +297,7 @@ export default function FoodSearch({
 
         {/* Regular food list */}
         {activeCategory !== 'meals' && filteredFoods.length === 0 && (
-          <p className="text-sm text-gray-500 text-center py-8">
+          <p className="text-sm text-app-text-secondary text-center py-8">
             {query ? 'No matching foods found' : 'Select a category to browse'}
           </p>
         )}
@@ -323,14 +323,14 @@ export default function FoodSearch({
                     className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all ${
                       isSelected
                         ? 'bg-app-accent border-app-accent'
-                        : 'border-gray-600'
+                        : 'border-app-border'
                     }`}
                   >
                     {isSelected && (
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                         <path
                           d="M2.5 6L5 8.5L9.5 3.5"
-                          stroke="#0a0d14"
+                          stroke="white"
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -338,21 +338,21 @@ export default function FoodSearch({
                       </svg>
                     )}
                   </div>
-                  <span className={`truncate ${isSelected ? 'text-white' : 'text-gray-300'}`}>
+                  <span className={`truncate ${isSelected ? 'text-app-text' : 'text-app-text-secondary'}`}>
                     {food.name}
                   </span>
                   {food.isCustom && (
-                    <span className="text-[10px] text-gray-600 bg-gray-800 rounded px-1 shrink-0">
+                    <span className="text-[10px] text-app-muted bg-app-tag-bg rounded px-1 shrink-0">
                       custom
                     </span>
                   )}
                   {alreadyLogged && (
-                    <span className="text-[10px] text-gray-600 bg-gray-800/50 rounded px-1 shrink-0">
+                    <span className="text-[10px] text-app-muted bg-app-tag-bg/70 rounded px-1 shrink-0">
                       logged
                     </span>
                   )}
                 </div>
-                <span className="text-xs text-gray-600 shrink-0 ml-2">
+                <span className="text-xs text-app-muted shrink-0 ml-2">
                   {CATEGORY_META[food.category].emoji}
                 </span>
               </button>

@@ -18,12 +18,12 @@ export default function WeekDetail({ summary, onBack, onDeleteEntry, isCurrent }
       <div className="flex items-center gap-3">
         <button
           onClick={onBack}
-          className="p-1 text-gray-400 hover:text-white transition-colors"
+          className="p-1 text-app-text-muted hover:text-app-text transition-colors"
         >
           <ChevronLeft size={20} />
         </button>
         <div>
-          <h2 className="text-sm font-semibold text-white">
+          <h2 className="text-sm font-semibold text-app-text">
             {formatWeekRange(summary.weekStart, summary.weekEnd)}
           </h2>
           {isCurrent && <span className="text-xs text-app-accent">Current week</span>}

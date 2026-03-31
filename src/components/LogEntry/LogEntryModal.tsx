@@ -105,15 +105,15 @@ export default function LogEntryModal({ onClose, onCreateMeal }: LogEntryModalPr
     <div className="fixed inset-0 z-50 flex flex-col bg-app-bg">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-app-border">
-        <button onClick={onClose} className="p-1 text-gray-400 hover:text-white">
+        <button onClick={onClose} className="p-1 text-app-text-muted hover:text-app-text">
           <X size={20} />
         </button>
-        <h2 className="text-sm font-semibold text-white">Log Food</h2>
+        <h2 className="text-sm font-semibold text-app-text">Log Food</h2>
         <div className="flex items-center gap-2">
           {!showCustom && (
             <button
               onClick={() => setShowCustom(true)}
-              className="p-1 text-gray-400 hover:text-app-accent"
+              className="p-1 text-app-text-muted hover:text-app-accent"
               title="Add custom food"
             >
               <Plus size={20} />
@@ -128,7 +128,7 @@ export default function LogEntryModal({ onClose, onCreateMeal }: LogEntryModalPr
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          className="w-full px-3 py-2 bg-app-surface border border-app-border rounded-xl text-sm text-white focus:outline-none focus:border-app-accent"
+          className="w-full px-3 py-2 bg-app-surface border border-app-border rounded-xl text-sm text-app-text focus:outline-none focus:border-app-accent"
         />
         <div className="flex gap-2">
           {mealTypes.map((mt) => (
@@ -137,8 +137,8 @@ export default function LogEntryModal({ onClose, onCreateMeal }: LogEntryModalPr
               onClick={() => setMealType(mealType === mt.value ? undefined : mt.value)}
               className={`flex-1 py-1.5 rounded-lg text-xs font-medium transition-all ${
                 mealType === mt.value
-                  ? 'bg-app-accent text-[#0a0d14]'
-                  : 'bg-app-surface border border-app-border text-gray-400 hover:text-white'
+                  ? 'bg-app-accent text-white'
+                  : 'bg-app-surface border border-app-border text-app-text-muted hover:text-app-text'
               }`}
             >
               {mt.emoji} {mt.label}
@@ -168,7 +168,7 @@ export default function LogEntryModal({ onClose, onCreateMeal }: LogEntryModalPr
       <div className="px-4 py-3 border-t border-app-border bg-app-bg safe-area-bottom">
         <button
           onClick={handleDone}
-          className="w-full py-3 rounded-xl bg-app-accent text-[#0a0d14] font-semibold hover:bg-app-accent-hover transition-all text-sm"
+          className="w-full py-3 rounded-xl bg-app-accent text-white font-semibold hover:bg-app-accent-hover transition-all text-sm"
         >
           {selected.size > 0
             ? `Add ${selected.size} food${selected.size !== 1 ? 's' : ''}`

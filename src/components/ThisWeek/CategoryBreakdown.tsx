@@ -41,8 +41,8 @@ export default function CategoryBreakdown({ entries, onDeleteEntry }: CategoryBr
   if (groups.length === 0) {
     return (
       <div className="bg-app-surface border border-app-border rounded-2xl p-6 text-center">
-        <p className="text-gray-500 text-sm">No foods logged this week yet.</p>
-        <p className="text-gray-600 text-xs mt-1">Tap the + button to get started!</p>
+        <p className="text-app-text-secondary text-sm">No foods logged this week yet.</p>
+        <p className="text-app-muted text-xs mt-1">Tap the + button to get started!</p>
       </div>
     )
   }
@@ -60,9 +60,9 @@ export default function CategoryBreakdown({ entries, onDeleteEntry }: CategoryBr
             <div className="flex items-center justify-between px-4 py-3 border-b border-app-border">
               <div className="flex items-center gap-2">
                 <span>{meta.emoji}</span>
-                <span className="text-sm font-medium text-gray-200">{meta.label}</span>
+                <span className="text-sm font-medium text-app-text">{meta.label}</span>
               </div>
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-app-text-muted">
                 {group.totalPoints % 1 === 0
                   ? group.totalPoints
                   : group.totalPoints.toFixed(2)}{' '}
@@ -77,18 +77,18 @@ export default function CategoryBreakdown({ entries, onDeleteEntry }: CategoryBr
                   className="flex items-center justify-between px-4 py-2.5 group"
                 >
                   <div className="flex items-center gap-2 min-w-0">
-                    <span className="text-sm text-gray-300 truncate">{entry.name}</span>
+                    <span className="text-sm text-app-text-secondary truncate">{entry.name}</span>
                     {entry.isCustom && (
-                      <span className="text-[10px] text-gray-600 bg-gray-800 rounded px-1 shrink-0">custom</span>
+                      <span className="text-[10px] text-app-muted bg-app-tag-bg rounded px-1 shrink-0">custom</span>
                     )}
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-app-text-muted">
                       {points === 0.25 ? '¼' : points} pt
                     </span>
                     <button
                       onClick={() => onDeleteEntry(entry.id)}
-                      className="opacity-0 group-hover:opacity-100 md:opacity-0 md:group-hover:opacity-100 p-1 text-gray-600 hover:text-red-400 transition-all"
+                      className="opacity-0 group-hover:opacity-100 md:opacity-0 md:group-hover:opacity-100 p-1 text-app-muted hover:text-red-400 transition-all"
                       aria-label={`Remove ${entry.name}`}
                     >
                       <Trash2 size={14} />

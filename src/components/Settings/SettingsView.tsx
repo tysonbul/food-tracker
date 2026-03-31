@@ -59,7 +59,7 @@ export default function SettingsView() {
 
   return (
     <div className="p-5 max-w-lg mx-auto space-y-5 pb-6">
-      <h1 className="text-lg font-semibold text-white">Settings</h1>
+      <h1 className="text-lg font-semibold text-app-text">Settings</h1>
 
       {/* How It Works */}
       <button
@@ -70,15 +70,15 @@ export default function SettingsView() {
           <BookOpen size={16} className="text-app-accent" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-white">How It Works</p>
-          <p className="text-xs text-gray-500">Learn about the 30-plant goal, scoring, and tips</p>
+          <p className="text-sm font-medium text-app-text">How It Works</p>
+          <p className="text-xs text-app-text-muted">Learn about the 30-plant goal, scoring, and tips</p>
         </div>
-        <ChevronRight size={16} className="text-gray-600 shrink-0" />
+        <ChevronRight size={16} className="text-app-text-muted shrink-0" />
       </button>
 
       {/* Week start day */}
       <div className="bg-app-surface border border-app-border rounded-2xl p-4 space-y-3">
-        <h3 className="text-sm font-medium text-gray-200">Week starts on</h3>
+        <h3 className="text-sm font-medium text-app-text">Week starts on</h3>
         <div className="flex gap-2">
           {([1, 0] as const).map((day) => {
             const active = data.settings.weekStartDay === day
@@ -88,8 +88,8 @@ export default function SettingsView() {
                 onClick={() => updateSettings({ weekStartDay: day })}
                 className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all ${
                   active
-                    ? 'bg-app-accent text-[#0a0d14]'
-                    : 'bg-app-hover text-gray-400 hover:text-white'
+                    ? 'bg-app-accent text-white'
+                    : 'bg-app-hover text-app-text-muted hover:text-app-text'
                 }`}
               >
                 {day === 1 ? 'Monday' : 'Sunday'}
@@ -101,12 +101,12 @@ export default function SettingsView() {
 
       {/* Data management */}
       <div className="bg-app-surface border border-app-border rounded-2xl p-4 space-y-3">
-        <h3 className="text-sm font-medium text-gray-200">Data</h3>
+        <h3 className="text-sm font-medium text-app-text">Data</h3>
 
         <div className="space-y-2">
           <button
             onClick={handleExport}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-app-hover text-sm text-gray-300 hover:text-white transition-all"
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-app-hover text-sm text-app-text-secondary hover:text-app-text transition-all"
           >
             <Download size={16} />
             Export backup (JSON)
@@ -114,7 +114,7 @@ export default function SettingsView() {
 
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-app-hover text-sm text-gray-300 hover:text-white transition-all"
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-app-hover text-sm text-app-text-secondary hover:text-app-text transition-all"
           >
             <Upload size={16} />
             Import backup
@@ -142,7 +142,7 @@ export default function SettingsView() {
 
         {showResetConfirm ? (
           <div className="space-y-2">
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-app-text-muted">
               This will permanently delete all your logged foods and custom entries.
               Your settings will be kept.
             </p>
@@ -155,7 +155,7 @@ export default function SettingsView() {
               </button>
               <button
                 onClick={() => setShowResetConfirm(false)}
-                className="flex-1 py-2.5 rounded-xl bg-app-hover text-gray-400 text-sm font-medium hover:text-white transition-all"
+                className="flex-1 py-2.5 rounded-xl bg-app-hover text-app-text-muted text-sm font-medium hover:text-app-text transition-all"
               >
                 Cancel
               </button>
@@ -173,7 +173,7 @@ export default function SettingsView() {
       </div>
 
       {/* Stats footer */}
-      <div className="text-center text-xs text-gray-600 space-y-0.5">
+      <div className="text-center text-xs text-app-text-muted space-y-0.5">
         <p>{data.entries.length} total entries logged</p>
         <p>{data.customFoods.length} custom foods saved</p>
       </div>

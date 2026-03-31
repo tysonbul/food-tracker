@@ -27,10 +27,10 @@ export default function MealsView() {
   return (
     <div className="p-5 max-w-lg mx-auto space-y-5 pb-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-semibold text-white">Meals</h1>
+        <h1 className="text-lg font-semibold text-app-text">Meals</h1>
         <button
           onClick={() => setShowCreate(true)}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-app-accent text-[#0a0d14] text-xs font-semibold hover:bg-app-accent-hover transition-all"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-app-accent text-white text-xs font-semibold hover:bg-app-accent-hover transition-all"
         >
           <Plus size={14} />
           New Meal
@@ -39,9 +39,9 @@ export default function MealsView() {
 
       {data.meals.length === 0 ? (
         <div className="bg-app-surface border border-app-border rounded-2xl p-8 text-center">
-          <UtensilsCrossed size={32} className="mx-auto text-gray-600 mb-3" />
-          <p className="text-sm text-gray-400 mb-1">No meals saved yet</p>
-          <p className="text-xs text-gray-600">
+          <UtensilsCrossed size={32} className="mx-auto text-app-muted mb-3" />
+          <p className="text-sm text-app-text-muted mb-1">No meals saved yet</p>
+          <p className="text-xs text-app-muted">
             Create a meal to quickly log common food combos — like your morning
             smoothie or go-to salad.
           </p>
@@ -65,7 +65,7 @@ export default function MealsView() {
                   </button>
                   <button
                     onClick={() => setConfirmDelete(null)}
-                    className="flex-1 py-2 rounded-xl bg-app-hover text-gray-400 text-xs font-medium hover:text-white transition-all"
+                    className="flex-1 py-2 rounded-xl bg-app-hover text-app-text-muted text-xs font-medium hover:text-app-text transition-all"
                   >
                     Cancel
                   </button>

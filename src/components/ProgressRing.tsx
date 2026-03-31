@@ -7,10 +7,10 @@ interface ProgressRingProps {
 
 function getProgressColor(current: number, goal: number): string {
   const ratio = current / goal
-  if (ratio >= 1) return '#FFD700' // gold — goal met!
-  if (ratio >= 0.67) return '#00d395' // green
-  if (ratio >= 0.33) return '#F5A623' // yellow/orange
-  return '#FF6B6B' // red
+  if (ratio >= 1) return '#d4a853' // warm gold — goal met!
+  if (ratio >= 0.67) return '#4a9e6b' // sage green
+  if (ratio >= 0.33) return '#d4944a' // warm amber
+  return '#c25e4a' // muted red
 }
 
 export default function ProgressRing({
@@ -34,7 +34,7 @@ export default function ProgressRing({
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="#1e2235"
+          stroke="#e2ddd4"
           strokeWidth={strokeWidth}
         />
         {/* Progress arc */}
@@ -53,8 +53,8 @@ export default function ProgressRing({
       </svg>
       {/* Center text */}
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-4xl font-bold text-white">{current % 1 === 0 ? current : current.toFixed(1)}</span>
-        <span className="text-sm text-gray-500">/ {goal} plants</span>
+        <span className="text-4xl font-bold text-app-text">{current % 1 === 0 ? current : current.toFixed(1)}</span>
+        <span className="text-sm text-app-text-muted">/ {goal} plants</span>
       </div>
     </div>
   )

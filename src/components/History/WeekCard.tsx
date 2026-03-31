@@ -33,23 +33,23 @@ export default function WeekCard({ summary, isCurrent, onSelect }: WeekCardProps
     >
       <div className="flex items-center justify-between mb-2.5">
         <div>
-          <span className="text-sm font-medium text-white">
+          <span className="text-sm font-medium text-app-text">
             {formatWeekRange(summary.weekStart, summary.weekEnd)}
           </span>
           {isCurrent && (
-            <span className="ml-2 text-[10px] text-app-accent bg-app-accent/10 rounded px-1.5 py-0.5">
+            <span className="ml-2 text-[10px] text-white bg-app-accent rounded px-1.5 py-0.5">
               current
             </span>
           )}
         </div>
         <div className="flex items-center gap-1.5">
           {summary.goalMet && <Check size={14} className="text-yellow-500" />}
-          <ChevronRight size={14} className="text-gray-600" />
+          <ChevronRight size={14} className="text-app-text-muted" />
         </div>
       </div>
 
       {/* Progress bar */}
-      <div className="h-2 rounded-full bg-gray-800 overflow-hidden mb-2">
+      <div className="h-2 rounded-full bg-app-border overflow-hidden mb-2">
         <div
           className={`h-full rounded-full transition-all duration-500 ${getBarColor(summary.totalPoints)}`}
           style={{ width: `${progress * 100}%` }}
@@ -57,13 +57,13 @@ export default function WeekCard({ summary, isCurrent, onSelect }: WeekCardProps
       </div>
 
       <div className="flex items-center justify-between">
-        <span className="text-xs text-gray-400">
+        <span className="text-xs text-app-text-muted">
           {summary.totalPoints % 1 === 0
             ? summary.totalPoints
             : summary.totalPoints.toFixed(1)}{' '}
           / 30 plants
         </span>
-        <span className="text-xs text-gray-500">
+        <span className="text-xs text-app-text-muted">
           {summary.uniquePlantCount} unique
         </span>
       </div>

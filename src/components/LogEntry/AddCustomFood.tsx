@@ -30,26 +30,26 @@ export default function AddCustomFood({ onAdd, onBack }: AddCustomFoodProps) {
     <div className="px-4 py-2 space-y-4">
       <button
         onClick={onBack}
-        className="flex items-center gap-1 text-sm text-gray-400 hover:text-white transition-colors"
+        className="flex items-center gap-1 text-sm text-app-text-muted hover:text-app-text transition-colors"
       >
         <ChevronLeft size={16} />
         Back to search
       </button>
 
       <div>
-        <label className="block text-xs text-gray-500 mb-1.5">Food name</label>
+        <label className="block text-xs text-app-text-muted mb-1.5">Food name</label>
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="e.g. Dragon Fruit Smoothie"
-          className="w-full px-3 py-2.5 bg-app-surface border border-app-border rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-app-accent"
+          className="w-full px-3 py-2.5 bg-app-surface border border-app-border rounded-xl text-sm text-app-text placeholder-app-text-muted focus:outline-none focus:border-app-accent"
           autoFocus
         />
       </div>
 
       <div>
-        <label className="block text-xs text-gray-500 mb-1.5">Category</label>
+        <label className="block text-xs text-app-text-muted mb-1.5">Category</label>
         <div className="grid grid-cols-2 gap-2">
           {CATEGORY_ORDER.map((cat) => {
             const meta = CATEGORY_META[cat]
@@ -60,12 +60,12 @@ export default function AddCustomFood({ onAdd, onBack }: AddCustomFoodProps) {
                 onClick={() => setCategory(cat)}
                 className={`px-3 py-2 rounded-xl text-xs font-medium text-left transition-all ${
                   active
-                    ? 'bg-app-accent/15 border border-app-accent/30 text-white'
-                    : 'bg-app-surface border border-app-border text-gray-400 hover:text-white'
+                    ? 'bg-app-accent/15 border border-app-accent/30 text-app-text'
+                    : 'bg-app-surface border border-app-border text-app-text-muted hover:text-app-text'
                 }`}
               >
                 <span>{meta.emoji} {meta.label}</span>
-                <span className={`text-[10px] ml-1 ${active ? 'text-[#0a0d14]/60' : 'text-gray-600'}`}>
+                <span className={`text-[10px] ml-1 ${active ? 'text-white/60' : 'text-app-muted'}`}>
                   {formatPoints(cat)}
                 </span>
               </button>
@@ -77,7 +77,7 @@ export default function AddCustomFood({ onAdd, onBack }: AddCustomFoodProps) {
       <button
         onClick={handleSubmit}
         disabled={!name.trim()}
-        className="w-full py-3 rounded-xl bg-app-accent text-[#0a0d14] font-semibold hover:bg-app-accent-hover transition-all text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+        className="w-full py-3 rounded-xl bg-app-accent text-white font-semibold hover:bg-app-accent-hover transition-all text-sm disabled:opacity-40 disabled:cursor-not-allowed"
       >
         Add "{name.trim() || '...'}"
       </button>

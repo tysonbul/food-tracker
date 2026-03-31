@@ -5,13 +5,20 @@ export default {
     extend: {
       colors: {
         app: {
-          bg: '#0a0d14',
-          surface: '#12151f',
-          hover: '#1a1e2e',
-          border: '#1e2235',
-          accent: '#00d395',
-          'accent-hover': '#00b580',
-          'accent-dim': 'rgba(0, 211, 149, 0.12)',
+          bg: '#f8f6f0',
+          surface: '#ffffff',
+          hover: '#f0ece4',
+          border: '#e2ddd4',
+          accent: '#4a9e6b',
+          'accent-hover': '#3d8a5b',
+          'accent-dim': 'rgba(74, 158, 107, 0.12)',
+          'accent-text': '#ffffff',
+          sidebar: '#f3f0e8',
+          muted: '#8a9a8c',
+          text: '#2d3a2e',
+          'text-secondary': '#4a5a4c',
+          'text-muted': '#8a9a8c',
+          'tag-bg': '#eae5db',
         },
       },
       fontFamily: {

@@ -13,10 +13,10 @@ export default function PWAUpdatePrompt() {
     <div className="fixed bottom-20 left-4 right-4 z-50 md:left-auto md:right-6 md:w-80">
       <div className="bg-app-surface border border-app-border rounded-lg p-4 shadow-lg flex items-center gap-3">
         <RefreshCw className="w-5 h-5 text-app-accent shrink-0" />
-        <p className="text-sm text-gray-300 flex-1">New version available</p>
+        <p className="text-sm text-app-text-secondary flex-1">New version available</p>
         <button
           onClick={() => updateServiceWorker(true)}
-          className="px-3 py-1.5 text-sm font-medium bg-app-accent text-gray-900 rounded-md hover:bg-app-accent-hover"
+          className="px-3 py-1.5 text-sm font-medium bg-app-accent text-white rounded-md hover:bg-app-accent-hover"
         >
           Update
         </button>

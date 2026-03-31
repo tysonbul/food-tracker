@@ -69,10 +69,10 @@ export default function MealEditor({ meal, onClose }: MealEditorProps) {
     <div className="fixed inset-0 z-50 flex flex-col bg-app-bg">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-app-border">
-        <button onClick={onClose} className="p-1 text-gray-400 hover:text-white">
+        <button onClick={onClose} className="p-1 text-app-text-muted hover:text-app-text">
           <X size={20} />
         </button>
-        <h2 className="text-sm font-semibold text-white">
+        <h2 className="text-sm font-semibold text-app-text">
           {meal ? 'Edit Meal' : 'Create Meal'}
         </h2>
         <div className="w-7" />
@@ -81,13 +81,13 @@ export default function MealEditor({ meal, onClose }: MealEditorProps) {
       <div className="flex-1 overflow-y-auto">
         {/* Meal name */}
         <div className="px-4 py-3 border-b border-app-border">
-          <label className="block text-xs text-gray-500 mb-1.5">Meal name</label>
+          <label className="block text-xs text-app-text-muted mb-1.5">Meal name</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="e.g. Morning Smoothie, Taco Tuesday"
-            className="w-full px-3 py-2.5 bg-app-surface border border-app-border rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-app-accent"
+            className="w-full px-3 py-2.5 bg-app-surface border border-app-border rounded-xl text-sm text-app-text placeholder-app-text-muted focus:outline-none focus:border-app-accent"
             autoFocus
           />
         </div>
@@ -96,7 +96,7 @@ export default function MealEditor({ meal, onClose }: MealEditorProps) {
         {items.length > 0 && (
           <div className="px-4 py-3 border-b border-app-border">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-app-text-muted">
                 {items.length} item{items.length !== 1 ? 's' : ''} · {totalPoints % 1 === 0 ? totalPoints : totalPoints.toFixed(2)} pts
               </span>
             </div>
@@ -122,13 +122,13 @@ export default function MealEditor({ meal, onClose }: MealEditorProps) {
         {/* Search + category filter */}
         <div className="px-4 pt-3 pb-2">
           <div className="relative">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-app-text-muted" />
             <input
               type="text"
               placeholder="Search foods to add..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-2.5 bg-app-surface border border-app-border rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-app-accent"
+              className="w-full pl-9 pr-3 py-2.5 bg-app-surface border border-app-border rounded-xl text-sm text-app-text placeholder-app-text-muted focus:outline-none focus:border-app-accent"
             />
           </div>
         </div>
@@ -143,8 +143,8 @@ export default function MealEditor({ meal, onClose }: MealEditorProps) {
                 onClick={() => setActiveCategory(active ? null : cat)}
                 className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                   active
-                    ? 'bg-app-accent text-gray-900'
-                    : 'bg-app-surface border border-app-border text-gray-400 hover:text-white'
+                    ? 'bg-app-accent text-white'
+                    : 'bg-app-surface border border-app-border text-app-text-muted hover:text-app-text'
                 }`}
               >
                 {meta.emoji} {meta.label}
@@ -172,20 +172,20 @@ export default function MealEditor({ meal, onClose }: MealEditorProps) {
                   <div className="flex items-center gap-2.5 min-w-0">
                     <div
                       className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all ${
-                        isSelected ? 'bg-app-accent border-app-accent' : 'border-gray-600'
+                        isSelected ? 'bg-app-accent border-app-accent' : 'border-app-border'
                       }`}
                     >
                       {isSelected && (
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                          <path d="M2.5 6L5 8.5L9.5 3.5" stroke="#0a0d14" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       )}
                     </div>
-                    <span className={`truncate ${isSelected ? 'text-white' : 'text-gray-300'}`}>
+                    <span className={`truncate ${isSelected ? 'text-app-text' : 'text-app-text-secondary'}`}>
                       {food.name}
                     </span>
                   </div>
-                  <span className="text-xs text-gray-600 shrink-0 ml-2">
+                  <span className="text-xs text-app-muted shrink-0 ml-2">
                     {CATEGORY_META[food.category].emoji}
                   </span>
                 </button>
@@ -200,7 +200,7 @@ export default function MealEditor({ meal, onClose }: MealEditorProps) {
         <button
           onClick={handleSave}
           disabled={!name.trim() || items.length === 0}
-          className="w-full py-3 rounded-xl bg-app-accent text-[#0a0d14] font-semibold hover:bg-app-accent-hover transition-all text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-full py-3 rounded-xl bg-app-accent text-white font-semibold hover:bg-app-accent-hover transition-all text-sm disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {meal ? 'Save Changes' : 'Create Meal'}
         </button>
