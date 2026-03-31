@@ -5,10 +5,15 @@ import ProgressRing from '../ProgressRing'
 import StreakBadge from './StreakBadge'
 import CategoryBreakdown from './CategoryBreakdown'
 import DailyView from './DailyView'
+import DiscoverCard from '../Discover/DiscoverCard'
 
 type WeekTab = 'score' | 'daily'
 
-export default function ThisWeekView() {
+interface ThisWeekViewProps {
+  onOpenDiscover?: () => void
+}
+
+export default function ThisWeekView({ onOpenDiscover }: ThisWeekViewProps) {
   const { data, currentWeekStart, currentWeekSummary, streak, totalUniquePlants, deleteEntry } = useFood()
   const [tab, setTab] = useState<WeekTab>('score')
   const goal = data.settings.weeklyGoal
@@ -81,6 +86,9 @@ export default function ThisWeekView() {
           onDeleteEntry={deleteEntry}
         />
       )}
+
+      {/* Discover card */}
+      {onOpenDiscover && <DiscoverCard onExplore={onOpenDiscover} />}
     </div>
   )
 }
