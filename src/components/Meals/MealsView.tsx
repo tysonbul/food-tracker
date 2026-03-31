@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Plus, UtensilsCrossed } from 'lucide-react'
 import { useFood } from '../../context/FoodContext'
 import { Meal } from '../../types'
+import EmptyState from '../common/EmptyState'
 import MealCard from './MealCard'
 import MealEditor from './MealEditor'
 
@@ -38,14 +39,11 @@ export default function MealsView() {
       </div>
 
       {data.meals.length === 0 ? (
-        <div className="bg-app-surface border border-app-border rounded-2xl p-8 text-center">
-          <UtensilsCrossed size={32} className="mx-auto text-app-muted mb-3" />
-          <p className="text-sm text-app-text-muted mb-1">No meals saved yet</p>
-          <p className="text-xs text-app-muted">
-            Create a meal to quickly log common food combos — like your morning
-            smoothie or go-to salad.
-          </p>
-        </div>
+        <EmptyState
+          icon={<UtensilsCrossed size={32} className="mx-auto text-app-muted" />}
+          message="No meals saved yet"
+          description="Create a meal to quickly log common food combos — like your morning smoothie or go-to salad."
+        />
       ) : (
         <div className="space-y-3">
           {data.meals.map((meal) => (

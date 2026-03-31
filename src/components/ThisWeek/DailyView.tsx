@@ -2,23 +2,15 @@ import { useState, useMemo } from 'react'
 import { ChevronDown, Trash2 } from 'lucide-react'
 import { FoodEntry, MealType, Meal } from '../../types'
 import { CATEGORY_META } from '../../data/foodDatabase'
+import { MEAL_TYPE_ORDER, MEAL_TYPE_META } from '../../data/mealTypes'
 import { getWeekEnd, getToday } from '../../utils/week'
+import EmptyState from '../common/EmptyState'
 
 interface DailyViewProps {
   weekStart: string
   entries: FoodEntry[]
   meals: Meal[]
   onDeleteEntry: (id: string) => void
-}
-
-const MEAL_TYPE_ORDER: (MealType | 'none')[] = ['breakfast', 'lunch', 'dinner', 'snack', 'none']
-
-const MEAL_TYPE_META: Record<MealType | 'none', { emoji: string; label: string }> = {
-  breakfast: { emoji: '🌅', label: 'Breakfast' },
-  lunch: { emoji: '☀️', label: 'Lunch' },
-  dinner: { emoji: '🌙', label: 'Dinner' },
-  snack: { emoji: '🍿', label: 'Snack' },
-  none: { emoji: '🍽', label: 'Other' },
 }
 
 function formatDayLabel(dateStr: string): string {
@@ -129,10 +121,10 @@ export default function DailyView({ weekStart, entries, meals, onDeleteEntry }: 
 
   if (days.every((d) => d.sections.length === 0)) {
     return (
-      <div className="bg-app-surface border border-app-border rounded-2xl p-6 text-center">
-        <p className="text-app-text-secondary text-sm">No foods logged this week yet.</p>
-        <p className="text-app-muted text-xs mt-1">Tap the + button to get started!</p>
-      </div>
+      <EmptyState
+        message="No foods logged this week yet."
+        description="Tap the + button to get started!"
+      />
     )
   }
 

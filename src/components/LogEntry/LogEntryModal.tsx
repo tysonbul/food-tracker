@@ -1,8 +1,10 @@
 import { useState, useMemo, useCallback } from 'react'
-import { X, Plus } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { FoodItem, FoodEntry, MealType } from '../../types'
 import { useFood } from '../../context/FoodContext'
 import { getToday } from '../../utils/week'
+import { MEAL_TYPES } from '../../data/mealTypes'
+import FullScreenModal from '../common/FullScreenModal'
 import FoodSearch from './FoodSearch'
 import AddCustomFood from './AddCustomFood'
 
@@ -19,13 +21,6 @@ export default function LogEntryModal({ onClose, onSave, onCreateMeal }: LogEntr
   const [date, setDate] = useState(getToday())
   const [mealType, setMealType] = useState<MealType | undefined>(undefined)
 
-  const mealTypes: { value: MealType; label: string; emoji: string }[] = [
-    { value: 'breakfast', label: 'Breakfast', emoji: '🌅' },
-    { value: 'lunch', label: 'Lunch', emoji: '☀️' },
-    { value: 'dinner', label: 'Dinner', emoji: '🌙' },
-    { value: 'snack', label: 'Snack', emoji: '🍿' },
-  ]
-
   // Foods already logged this week (by lowercase name)
   const loggedThisWeek = useMemo(() => {
     return new Set(
@@ -36,7 +31,6 @@ export default function LogEntryModal({ onClose, onSave, onCreateMeal }: LogEntr
   // Recent foods — unique foods from last 4 weeks, not already logged this week
   const recentFoods = useMemo(() => {
     const seen = new Map<string, FoodItem>()
-    // Sort entries by date descending
     const sorted = [...data.entries].sort((a, b) => b.date.localeCompare(a.date))
     for (const entry of sorted) {
       const key = entry.name.toLowerCase().trim()
@@ -73,7 +67,6 @@ export default function LogEntryModal({ onClose, onSave, onCreateMeal }: LogEntr
   const handleAddCustom = useCallback(
     (food: FoodItem) => {
       addCustomFood(food)
-      // Also select it
       setSelected((prev) => {
         const next = new Map(prev)
         next.set(food.name.toLowerCase().trim(), food)
@@ -107,26 +100,31 @@ export default function LogEntryModal({ onClose, onSave, onCreateMeal }: LogEntr
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-app-bg overflow-x-hidden">
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-app-border">
-        <button onClick={onClose} className="p-1 text-app-text-muted hover:text-app-text">
-          <X size={20} />
+    <FullScreenModal
+      title="Log Food"
+      onClose={onClose}
+      headerRight={
+        !showCustom ? (
+          <button
+            onClick={() => setShowCustom(true)}
+            className="p-1 text-app-text-muted hover:text-app-accent"
+            title="Add custom food"
+          >
+            <Plus size={20} />
+          </button>
+        ) : undefined
+      }
+      footer={
+        <button
+          onClick={handleDone}
+          className="w-full py-3 rounded-xl bg-app-accent text-white font-semibold hover:bg-app-accent-hover transition-all text-sm"
+        >
+          {selected.size > 0
+            ? `Add ${selected.size} food${selected.size !== 1 ? 's' : ''}`
+            : 'Done'}
         </button>
-        <h2 className="text-sm font-semibold text-app-text">Log Food</h2>
-        <div className="flex items-center gap-2">
-          {!showCustom && (
-            <button
-              onClick={() => setShowCustom(true)}
-              className="p-1 text-app-text-muted hover:text-app-accent"
-              title="Add custom food"
-            >
-              <Plus size={20} />
-            </button>
-          )}
-        </div>
-      </div>
-
+      }
+    >
       {/* Date picker + meal type */}
       <div className="px-4 py-2.5 border-b border-app-border space-y-2.5 overflow-hidden">
         <input
@@ -136,7 +134,7 @@ export default function LogEntryModal({ onClose, onSave, onCreateMeal }: LogEntr
           className="w-full max-w-full px-3 py-2 bg-app-surface border border-app-border rounded-xl text-sm text-app-text focus:outline-none focus:border-app-accent"
         />
         <div className="grid grid-cols-4 gap-1.5">
-          {mealTypes.map((mt) => (
+          {MEAL_TYPES.map((mt) => (
             <button
               key={mt.value}
               onClick={() => setMealType(mealType === mt.value ? undefined : mt.value)}
@@ -168,18 +166,6 @@ export default function LogEntryModal({ onClose, onSave, onCreateMeal }: LogEntr
           />
         )}
       </div>
-
-      {/* Bottom bar — Done button with count */}
-      <div className="px-4 py-3 border-t border-app-border bg-app-bg safe-area-bottom">
-        <button
-          onClick={handleDone}
-          className="w-full py-3 rounded-xl bg-app-accent text-white font-semibold hover:bg-app-accent-hover transition-all text-sm"
-        >
-          {selected.size > 0
-            ? `Add ${selected.size} food${selected.size !== 1 ? 's' : ''}`
-            : 'Done'}
-        </button>
-      </div>
-    </div>
+    </FullScreenModal>
   )
 }

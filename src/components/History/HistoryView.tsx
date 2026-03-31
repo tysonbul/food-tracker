@@ -6,6 +6,7 @@ import {
   calculateWeekSummary,
   getAverageWeeklyPoints,
 } from '../../utils/week'
+import EmptyState from '../common/EmptyState'
 import WeekCard from './WeekCard'
 import WeekDetail from './WeekDetail'
 
@@ -105,9 +106,7 @@ export default function HistoryView() {
       </div>
 
       {weeks.length === 0 && (
-        <div className="bg-app-surface border border-app-border rounded-2xl p-6 text-center">
-          <p className="text-app-text-secondary text-sm">No history yet. Start logging foods!</p>
-        </div>
+        <EmptyState message="No history yet. Start logging foods!" />
       )}
     </div>
   )

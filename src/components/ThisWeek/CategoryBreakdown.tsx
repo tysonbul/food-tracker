@@ -1,6 +1,9 @@
 import { FoodEntry, getPointValue, FoodCategory } from '../../types'
 import { CATEGORY_META, CATEGORY_ORDER } from '../../data/foodDatabase'
+import { deduplicateEntries } from '../../utils/format'
+import { formatPoints } from '../../utils/format'
 import { Trash2 } from 'lucide-react'
+import EmptyState from '../common/EmptyState'
 
 interface CategoryBreakdownProps {
   entries: FoodEntry[]
@@ -14,15 +17,7 @@ interface GroupedCategory {
 }
 
 export default function CategoryBreakdown({ entries, onDeleteEntry }: CategoryBreakdownProps) {
-  // Deduplicate entries by name (case-insensitive) — only unique foods for scoring
-  const seen = new Map<string, FoodEntry>()
-  for (const entry of entries) {
-    const key = entry.name.toLowerCase().trim()
-    if (!seen.has(key)) {
-      seen.set(key, entry)
-    }
-  }
-  const uniqueEntries = Array.from(seen.values())
+  const uniqueEntries = deduplicateEntries(entries)
 
   // Group by category
   const groups: GroupedCategory[] = CATEGORY_ORDER
@@ -40,10 +35,10 @@ export default function CategoryBreakdown({ entries, onDeleteEntry }: CategoryBr
 
   if (groups.length === 0) {
     return (
-      <div className="bg-app-surface border border-app-border rounded-2xl p-6 text-center">
-        <p className="text-app-text-secondary text-sm">No foods logged this week yet.</p>
-        <p className="text-app-muted text-xs mt-1">Tap the + button to get started!</p>
-      </div>
+      <EmptyState
+        message="No foods logged this week yet."
+        description="Tap the + button to get started!"
+      />
     )
   }
 
@@ -63,10 +58,7 @@ export default function CategoryBreakdown({ entries, onDeleteEntry }: CategoryBr
                 <span className="text-sm font-medium text-app-text">{meta.label}</span>
               </div>
               <span className="text-xs text-app-text-muted">
-                {group.totalPoints % 1 === 0
-                  ? group.totalPoints
-                  : group.totalPoints.toFixed(2)}{' '}
-                pt{group.totalPoints !== 1 ? 's' : ''}
+                {formatPoints(group.totalPoints)} pt{group.totalPoints !== 1 ? 's' : ''}
               </span>
             </div>
             {/* Items */}
@@ -84,7 +76,7 @@ export default function CategoryBreakdown({ entries, onDeleteEntry }: CategoryBr
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
                     <span className="text-xs text-app-text-muted">
-                      {points === 0.25 ? '¼' : points} pt
+                      {formatPoints(points)} pt
                     </span>
                     <button
                       onClick={() => onDeleteEntry(entry.id)}

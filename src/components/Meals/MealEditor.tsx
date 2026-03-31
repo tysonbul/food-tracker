@@ -1,11 +1,14 @@
 import { useState, useMemo } from 'react'
-import { X, Search, Trash2 } from 'lucide-react'
+import { Search, Trash2 } from 'lucide-react'
 import { FoodItem, FoodCategory, Meal, getPointValue } from '../../types'
-import { ALL_FOODS, CATEGORY_META, CATEGORY_ORDER } from '../../data/foodDatabase'
+import { ALL_FOODS, CATEGORY_META } from '../../data/foodDatabase'
 import { useFood } from '../../context/FoodContext'
+import { formatPointsWithUnit } from '../../utils/format'
+import FullScreenModal from '../common/FullScreenModal'
+import CategoryChips from '../common/CategoryChips'
+import FoodItemRow from '../common/FoodItemRow'
 
 interface MealEditorProps {
-  /** Existing meal to edit, or undefined for new */
   meal?: Meal
   onClose: () => void
 }
@@ -66,18 +69,19 @@ export default function MealEditor({ meal, onClose }: MealEditorProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-app-bg overflow-x-hidden">
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-app-border">
-        <button onClick={onClose} className="p-1 text-app-text-muted hover:text-app-text">
-          <X size={20} />
+    <FullScreenModal
+      title={meal ? 'Edit Meal' : 'Create Meal'}
+      onClose={onClose}
+      footer={
+        <button
+          onClick={handleSave}
+          disabled={!name.trim() || items.length === 0}
+          className="w-full py-3 rounded-xl bg-app-accent text-white font-semibold hover:bg-app-accent-hover transition-all text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          {meal ? 'Save Changes' : 'Create Meal'}
         </button>
-        <h2 className="text-sm font-semibold text-app-text">
-          {meal ? 'Edit Meal' : 'Create Meal'}
-        </h2>
-        <div className="w-7" />
-      </div>
-
+      }
+    >
       <div className="flex-1 overflow-y-auto">
         {/* Meal name */}
         <div className="px-4 py-3 border-b border-app-border">
@@ -97,7 +101,7 @@ export default function MealEditor({ meal, onClose }: MealEditorProps) {
           <div className="px-4 py-3 border-b border-app-border">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs text-app-text-muted">
-                {items.length} item{items.length !== 1 ? 's' : ''} · {totalPoints % 1 === 0 ? totalPoints : totalPoints.toFixed(2)} pts
+                {items.length} item{items.length !== 1 ? 's' : ''} · {formatPointsWithUnit(totalPoints)}
               </span>
             </div>
             <div className="flex flex-wrap gap-1.5">
@@ -133,78 +137,25 @@ export default function MealEditor({ meal, onClose }: MealEditorProps) {
           </div>
         </div>
 
-        <div className="flex gap-2 px-4 pb-2 overflow-x-auto scrollbar-hide">
-          {CATEGORY_ORDER.map((cat) => {
-            const meta = CATEGORY_META[cat]
-            const active = activeCategory === cat
-            return (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(active ? null : cat)}
-                className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                  active
-                    ? 'bg-app-accent text-white'
-                    : 'bg-app-surface border border-app-border text-app-text-muted hover:text-app-text'
-                }`}
-              >
-                {meta.emoji} {meta.label}
-              </button>
-            )
-          })}
-        </div>
+        <CategoryChips active={activeCategory} onChange={setActiveCategory} />
 
         {/* Food list */}
         <div className="px-4 pb-4">
           <div className="space-y-1">
             {filteredFoods.slice(0, 100).map((food) => {
-              const key = food.name.toLowerCase().trim()
-              const isSelected = selectedKeys.has(key)
+              const isSelected = selectedKeys.has(food.name.toLowerCase().trim())
               return (
-                <button
+                <FoodItemRow
                   key={`${food.category}-${food.name}`}
+                  food={food}
+                  isSelected={isSelected}
                   onClick={() => handleToggle(food)}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm transition-all ${
-                    isSelected
-                      ? 'bg-app-accent/15 border border-app-accent/30'
-                      : 'hover:bg-app-hover'
-                  }`}
-                >
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <div
-                      className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all ${
-                        isSelected ? 'bg-app-accent border-app-accent' : 'border-app-border'
-                      }`}
-                    >
-                      {isSelected && (
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                          <path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      )}
-                    </div>
-                    <span className={`truncate ${isSelected ? 'text-app-text' : 'text-app-text-secondary'}`}>
-                      {food.name}
-                    </span>
-                  </div>
-                  <span className="text-xs text-app-muted shrink-0 ml-2">
-                    {CATEGORY_META[food.category].emoji}
-                  </span>
-                </button>
+                />
               )
             })}
           </div>
         </div>
       </div>
-
-      {/* Save button */}
-      <div className="px-4 py-3 border-t border-app-border bg-app-bg">
-        <button
-          onClick={handleSave}
-          disabled={!name.trim() || items.length === 0}
-          className="w-full py-3 rounded-xl bg-app-accent text-white font-semibold hover:bg-app-accent-hover transition-all text-sm disabled:opacity-40 disabled:cursor-not-allowed"
-        >
-          {meal ? 'Save Changes' : 'Create Meal'}
-        </button>
-      </div>
-    </div>
+    </FullScreenModal>
   )
 }

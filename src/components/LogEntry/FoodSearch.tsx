@@ -1,21 +1,17 @@
 import { useState, useMemo } from 'react'
 import { Search, X } from 'lucide-react'
-import { FoodItem, FoodCategory, Meal, getPointValue } from '../../types'
-import { ALL_FOODS, CATEGORY_META, CATEGORY_ORDER } from '../../data/foodDatabase'
+import { FoodItem, FoodCategory, Meal } from '../../types'
+import { ALL_FOODS } from '../../data/foodDatabase'
+import CategoryChips from '../common/CategoryChips'
+import FoodItemRow from '../common/FoodItemRow'
 
 interface FoodSearchProps {
-  /** Foods already logged this week (by lowercase name) */
   loggedThisWeek: Set<string>
-  /** Custom foods from user history */
   customFoods: FoodItem[]
-  /** Recently logged foods (for "Recent" section) */
   recentFoods: FoodItem[]
-  /** Saved meals */
   meals: Meal[]
-  /** Currently selected foods in this session */
   selected: Set<string>
   onToggle: (food: FoodItem) => void
-  /** Navigate to meals tab to create a new meal */
   onCreateMeal?: () => void
 }
 
@@ -38,7 +34,6 @@ export default function FoodSearch({
     const recentItems = recentFoods.map((f) => ({ ...f, _priority: 1 as const }))
     const builtIn = ALL_FOODS.map((f) => ({ ...f, _priority: 2 as const }))
 
-    // Merge, deduplicating by lowercase name (custom wins over recent wins over built-in)
     const seen = new Set<string>()
     const merged: (FoodItem & { _priority: number })[] = []
     for (const list of [customItems, recentItems, builtIn]) {
@@ -68,12 +63,9 @@ export default function FoodSearch({
   // Filter foods based on search and category
   const filteredFoods = useMemo(() => {
     if (activeCategory === 'meals') return []
-
     if (activeCategory === 'recent') {
       const q = query.toLowerCase()
-      return recentFoods.filter((f) =>
-        q ? f.name.toLowerCase().includes(q) : true,
-      )
+      return recentFoods.filter((f) => (q ? f.name.toLowerCase().includes(q) : true))
     }
 
     let foods = allFoods
@@ -86,6 +78,11 @@ export default function FoodSearch({
     }
     return foods
   }, [allFoods, recentFoods, query, activeCategory])
+
+  const handleCategoryChange = (cat: FoodCategory | null) => {
+    // CategoryChips only emits FoodCategory | null — handle our custom tabs separately
+    setActiveCategory(cat)
+  }
 
   return (
     <div className="flex flex-col h-full">
@@ -111,55 +108,42 @@ export default function FoodSearch({
       </div>
 
       {/* Category chips */}
-      <div className="flex gap-2 px-4 pb-3 overflow-x-auto scrollbar-hide">
-        {recentFoods.length > 0 && (
-          <button
-            onClick={() => setActiveCategory(activeCategory === 'recent' ? null : 'recent')}
-            className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-              activeCategory === 'recent'
-                ? 'bg-app-accent text-white'
-                : 'bg-app-surface border border-app-border text-app-text-muted hover:text-app-text'
-            }`}
-          >
-            ⏱ Recent
-          </button>
-        )}
-        {meals.length > 0 && (
-          <button
-            onClick={() => {
-              setActiveCategory(activeCategory === 'meals' ? null : 'meals')
-              setExpandedMeal(null)
-            }}
-            className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-              activeCategory === 'meals'
-                ? 'bg-app-accent text-white'
-                : 'bg-app-surface border border-app-border text-app-text-muted hover:text-app-text'
-            }`}
-          >
-            🍽 Meals
-          </button>
-        )}
-        {CATEGORY_ORDER.map((cat) => {
-          const meta = CATEGORY_META[cat]
-          const active = activeCategory === cat
-          return (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(active ? null : cat)}
-              className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                active
-                  ? 'bg-app-accent text-white'
-                  : 'bg-app-surface border border-app-border text-app-text-muted hover:text-app-text'
-              }`}
-            >
-              {meta.emoji} {meta.label}
-              <span className={`ml-0.5 ${active ? 'text-white/60' : 'text-app-muted'}`}>
-                {getPointValue(cat) === 0.25 ? '¼' : getPointValue(cat) === 0 ? '0' : getPointValue(cat)}
-              </span>
-            </button>
-          )
-        })}
-      </div>
+      <CategoryChips
+        active={typeof activeCategory === 'string' && activeCategory !== 'recent' && activeCategory !== 'meals' ? activeCategory : null}
+        onChange={handleCategoryChange}
+        showPoints
+        prefix={
+          <>
+            {recentFoods.length > 0 && (
+              <button
+                onClick={() => setActiveCategory(activeCategory === 'recent' ? null : 'recent')}
+                className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                  activeCategory === 'recent'
+                    ? 'bg-app-accent text-white'
+                    : 'bg-app-surface border border-app-border text-app-text-muted hover:text-app-text'
+                }`}
+              >
+                ⏱ Recent
+              </button>
+            )}
+            {meals.length > 0 && (
+              <button
+                onClick={() => {
+                  setActiveCategory(activeCategory === 'meals' ? null : 'meals')
+                  setExpandedMeal(null)
+                }}
+                className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                  activeCategory === 'meals'
+                    ? 'bg-app-accent text-white'
+                    : 'bg-app-surface border border-app-border text-app-text-muted hover:text-app-text'
+                }`}
+              >
+                🍽 Meals
+              </button>
+            )}
+          </>
+        }
+      />
 
       {/* Food list */}
       <div className="flex-1 overflow-y-auto px-4 pb-4">
@@ -233,49 +217,16 @@ export default function FoodSearch({
                           const key = food.name.toLowerCase().trim()
                           const alreadyLogged = loggedThisWeek.has(key)
                           const isSelected = selected.has(key)
+                          const tags: ('custom' | 'logged')[] = []
+                          if (alreadyLogged) tags.push('logged')
                           return (
-                            <button
+                            <FoodItemRow
                               key={`${meal.id}-${food.name}`}
+                              food={food}
+                              isSelected={isSelected}
                               onClick={() => onToggle(food)}
-                              className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-all ${
-                                isSelected
-                                  ? 'bg-app-accent/15 border border-app-accent/30'
-                                  : 'hover:bg-app-hover'
-                              }`}
-                            >
-                              <div className="flex items-center gap-2.5 min-w-0">
-                                <div
-                                  className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all ${
-                                    isSelected
-                                      ? 'bg-app-accent border-app-accent'
-                                      : 'border-app-border'
-                                  }`}
-                                >
-                                  {isSelected && (
-                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                                      <path
-                                        d="M2.5 6L5 8.5L9.5 3.5"
-                                        stroke="white"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                      />
-                                    </svg>
-                                  )}
-                                </div>
-                                <span className={`truncate ${isSelected ? 'text-app-text' : 'text-app-text-secondary'}`}>
-                                  {food.name}
-                                </span>
-                                {alreadyLogged && (
-                                  <span className="text-[10px] text-app-muted bg-app-tag-bg/70 rounded px-1 shrink-0">
-                                    logged
-                                  </span>
-                                )}
-                              </div>
-                              <span className="text-xs text-app-muted shrink-0 ml-2">
-                                {CATEGORY_META[food.category].emoji}
-                              </span>
-                            </button>
+                              tags={tags}
+                            />
                           )
                         })}
                       </div>
@@ -301,64 +252,28 @@ export default function FoodSearch({
             {query ? 'No matching foods found' : 'Select a category to browse'}
           </p>
         )}
-        {activeCategory !== 'meals' && <div className="space-y-1">
-          {filteredFoods.map((food) => {
-            const key = food.name.toLowerCase().trim()
-            const alreadyLogged = loggedThisWeek.has(key)
-            const isSelected = selected.has(key)
+        {activeCategory !== 'meals' && (
+          <div className="space-y-1">
+            {filteredFoods.map((food) => {
+              const key = food.name.toLowerCase().trim()
+              const alreadyLogged = loggedThisWeek.has(key)
+              const isSelected = selected.has(key)
+              const tags: ('custom' | 'logged')[] = []
+              if (food.isCustom) tags.push('custom')
+              if (alreadyLogged) tags.push('logged')
 
-            return (
-              <button
-                key={`${food.category}-${food.name}`}
-                onClick={() => onToggle(food)}
-                className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm transition-all ${
-                  isSelected
-                    ? 'bg-app-accent/15 border border-app-accent/30'
-                    : 'hover:bg-app-hover'
-                }`}
-              >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  {/* Checkbox indicator */}
-                  <div
-                    className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all ${
-                      isSelected
-                        ? 'bg-app-accent border-app-accent'
-                        : 'border-app-border'
-                    }`}
-                  >
-                    {isSelected && (
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                        <path
-                          d="M2.5 6L5 8.5L9.5 3.5"
-                          stroke="white"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    )}
-                  </div>
-                  <span className={`truncate ${isSelected ? 'text-app-text' : 'text-app-text-secondary'}`}>
-                    {food.name}
-                  </span>
-                  {food.isCustom && (
-                    <span className="text-[10px] text-app-muted bg-app-tag-bg rounded px-1 shrink-0">
-                      custom
-                    </span>
-                  )}
-                  {alreadyLogged && (
-                    <span className="text-[10px] text-app-muted bg-app-tag-bg/70 rounded px-1 shrink-0">
-                      logged
-                    </span>
-                  )}
-                </div>
-                <span className="text-xs text-app-muted shrink-0 ml-2">
-                  {CATEGORY_META[food.category].emoji}
-                </span>
-              </button>
-            )
-          })}
-        </div>}
+              return (
+                <FoodItemRow
+                  key={`${food.category}-${food.name}`}
+                  food={food}
+                  isSelected={isSelected}
+                  onClick={() => onToggle(food)}
+                  tags={tags}
+                />
+              )
+            })}
+          </div>
+        )}
       </div>
     </div>
   )

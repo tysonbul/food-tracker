@@ -1,5 +1,6 @@
 import { Meal, getPointValue } from '../../types'
 import { CATEGORY_META } from '../../data/foodDatabase'
+import { formatPointsWithUnit } from '../../utils/format'
 import { Pencil, Trash2 } from 'lucide-react'
 
 interface MealCardProps {
@@ -21,7 +22,7 @@ export default function MealCard({
         <div className="min-w-0">
           <h3 className="text-sm font-medium text-app-text truncate">{meal.name}</h3>
           <p className="text-xs text-app-text-muted mt-0.5">
-            {meal.items.length} item{meal.items.length !== 1 ? 's' : ''} · {totalPoints % 1 === 0 ? totalPoints : totalPoints.toFixed(2)} pts
+            {meal.items.length} item{meal.items.length !== 1 ? 's' : ''} · {formatPointsWithUnit(totalPoints)}
           </p>
         </div>
         <div className="flex items-center gap-1.5 shrink-0">

@@ -1,4 +1,5 @@
 import { FoodEntry, WeekSummary, getPointValue } from '../types'
+import { deduplicateEntries } from './format'
 
 /**
  * Get the start date (YYYY-MM-DD) of the week containing `date`.
@@ -49,15 +50,7 @@ export function calculateWeekSummary(
   const weekEnd = getWeekEnd(weekStart)
 
   // Deduplicate by lowercase name — only unique plants count
-  const seen = new Map<string, FoodEntry>()
-  for (const entry of entries) {
-    const key = entry.name.toLowerCase().trim()
-    if (!seen.has(key)) {
-      seen.set(key, entry)
-    }
-  }
-
-  const uniqueEntries = Array.from(seen.values())
+  const uniqueEntries = deduplicateEntries(entries)
   let totalPoints = 0
   let uniquePlantCount = 0
 
