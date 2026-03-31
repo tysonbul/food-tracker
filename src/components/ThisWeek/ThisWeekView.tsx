@@ -1,0 +1,87 @@
+import { useState } from 'react'
+import { useFood } from '../../context/FoodContext'
+import { formatWeekRange } from '../../utils/week'
+import ProgressRing from '../ProgressRing'
+import StreakBadge from './StreakBadge'
+import CategoryBreakdown from './CategoryBreakdown'
+import DailyView from './DailyView'
+
+const GOAL = 30
+
+type WeekTab = 'score' | 'daily'
+
+export default function ThisWeekView() {
+  const { data, currentWeekStart, currentWeekSummary, streak, totalUniquePlants, deleteEntry } = useFood()
+  const [tab, setTab] = useState<WeekTab>('score')
+
+  return (
+    <div className="p-5 max-w-lg mx-auto space-y-5 pb-6">
+      {/* Week label */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-lg font-semibold text-white">This Week</h1>
+        <span className="text-xs text-gray-500">
+          {formatWeekRange(currentWeekSummary.weekStart, currentWeekSummary.weekEnd)}
+        </span>
+      </div>
+
+      {/* Progress ring + streak */}
+      <div className="bg-app-surface border border-app-border rounded-2xl p-6 flex flex-col items-center gap-4">
+        <ProgressRing current={currentWeekSummary.totalPoints} goal={GOAL} />
+        <StreakBadge current={streak.current} longest={streak.longest} />
+
+        {/* Quick stats row */}
+        <div className="flex gap-6 text-center">
+          <div>
+            <p className="text-lg font-semibold text-white">{currentWeekSummary.uniquePlantCount}</p>
+            <p className="text-[10px] text-gray-500 uppercase tracking-wider">unique this week</p>
+          </div>
+          <div className="w-px bg-app-border" />
+          <div>
+            <p className="text-lg font-semibold text-white">{totalUniquePlants}</p>
+            <p className="text-[10px] text-gray-500 uppercase tracking-wider">all-time unique</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Tab switcher */}
+      <div className="flex bg-app-surface border border-app-border rounded-xl p-1">
+        <button
+          onClick={() => setTab('score')}
+          className={`flex-1 py-2 rounded-lg text-xs font-medium transition-all ${
+            tab === 'score'
+              ? 'bg-app-accent text-[#0a0d14]'
+              : 'text-gray-400 hover:text-white'
+          }`}
+        >
+          Score
+        </button>
+        <button
+          onClick={() => setTab('daily')}
+          className={`flex-1 py-2 rounded-lg text-xs font-medium transition-all ${
+            tab === 'daily'
+              ? 'bg-app-accent text-[#0a0d14]'
+              : 'text-gray-400 hover:text-white'
+          }`}
+        >
+          Daily
+        </button>
+      </div>
+
+      {/* Tab content */}
+      {tab === 'score' && (
+        <CategoryBreakdown
+          entries={currentWeekSummary.entries}
+          onDeleteEntry={deleteEntry}
+        />
+      )}
+      {tab === 'daily' && (
+        <DailyView
+          weekStart={currentWeekStart}
+          entries={currentWeekSummary.entries}
+          meals={data.meals}
+          onDeleteEntry={deleteEntry}
+        />
+      )}
+    </div>
+  )
+}
