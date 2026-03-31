@@ -1,8 +1,22 @@
 import { useState, useRef } from 'react'
-import { Download, Upload, Trash2, BookOpen, ChevronRight } from 'lucide-react'
+import { Download, Upload, Trash2, BookOpen, ChevronRight, Info } from 'lucide-react'
 import { useFood } from '../../context/FoodContext'
+import { DEFAULT_GOAL } from '../../types'
 import { exportData, importData } from '../../utils/storage'
 import HowItWorksView from './HowItWorksView'
+
+interface GoalTier {
+  value: number
+  emoji: string
+  name: string
+  description: string
+}
+
+const GOAL_TIERS: GoalTier[] = [
+  { value: 20, emoji: '🌱', name: 'Seedling', description: 'A great place to start growing' },
+  { value: 30, emoji: '🌿', name: 'Blooming', description: 'The research-backed sweet spot' },
+  { value: 40, emoji: '🌳', name: 'Thriving', description: 'Go beyond and keep exploring' },
+]
 
 export default function SettingsView() {
   const [showHowItWorks, setShowHowItWorks] = useState(false)
@@ -10,6 +24,29 @@ export default function SettingsView() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [importStatus, setImportStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [showResetConfirm, setShowResetConfirm] = useState(false)
+  const [showResearchInfo, setShowResearchInfo] = useState(false)
+
+  const goal = data.settings.weeklyGoal ?? DEFAULT_GOAL
+  const isCustomGoal = !GOAL_TIERS.some((t) => t.value === goal)
+  const [showCustomInput, setShowCustomInput] = useState(isCustomGoal)
+  const [customValue, setCustomValue] = useState(String(goal))
+
+  const handleGoalSelect = (value: number) => {
+    setShowCustomInput(false)
+    updateSettings({ weeklyGoal: value })
+  }
+
+  const handleCustomGoal = () => {
+    setShowCustomInput(true)
+  }
+
+  const handleCustomSubmit = () => {
+    const num = Math.max(5, Math.min(100, Math.round(Number(customValue))))
+    if (!isNaN(num)) {
+      updateSettings({ weeklyGoal: num })
+      setCustomValue(String(num))
+    }
+  }
 
   const handleExport = () => {
     const json = exportData(data)
@@ -38,7 +75,6 @@ export default function SettingsView() {
       }
     }
     reader.readAsText(file)
-    // Reset file input
     if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
@@ -71,10 +107,137 @@ export default function SettingsView() {
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-medium text-app-text">How It Works</p>
-          <p className="text-xs text-app-text-muted">Learn about the 30-plant goal, scoring, and tips</p>
+          <p className="text-xs text-app-text-muted">Learn about scoring, categories, and tips</p>
         </div>
         <ChevronRight size={16} className="text-app-text-muted shrink-0" />
       </button>
+
+      {/* Weekly Goal */}
+      <div className="bg-app-surface border border-app-border rounded-2xl p-4 space-y-3">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-medium text-app-text">Weekly goal</h3>
+          <button
+            onClick={() => setShowResearchInfo(!showResearchInfo)}
+            className="p-1 text-app-text-muted hover:text-app-accent transition-colors"
+            title="About this goal"
+          >
+            <Info size={16} />
+          </button>
+        </div>
+
+        {/* Research info panel */}
+        {showResearchInfo && (
+          <div className="bg-app-hover/60 border border-app-border rounded-xl p-3 space-y-2 text-xs text-app-text-secondary leading-relaxed">
+            <p>
+              The{' '}
+              <a
+                href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5954204/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-app-accent underline"
+              >
+                American Gut Project
+              </a>
+              {' '}(15,000+ participants) found that people eating 30+ different plants per week
+              had significantly more diverse gut microbiomes than those eating fewer than 10.
+            </p>
+            <p>
+              The relationship is a gradient — more variety means more benefit. There's no cliff
+              where benefits suddenly start, so{' '}
+              <a
+                href="https://theconversation.com/the-30-plants-a-week-challenge-youll-still-see-gut-health-benefits-even-if-you-dont-meet-this-goal-248491"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-app-accent underline"
+              >
+                even modest increases help
+              </a>.
+              Pick whatever goal keeps you motivated.
+            </p>
+          </div>
+        )}
+
+        {/* Tier buttons */}
+        <div className="space-y-2">
+          {GOAL_TIERS.map((tier) => {
+            const active = goal === tier.value && !showCustomInput
+            return (
+              <button
+                key={tier.value}
+                onClick={() => handleGoalSelect(tier.value)}
+                className={`w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-left transition-all ${
+                  active
+                    ? 'bg-app-accent/10 border border-app-accent/30'
+                    : 'bg-app-hover/50 border border-transparent hover:border-app-border'
+                }`}
+              >
+                <span className="text-xl">{tier.emoji}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className={`text-sm font-medium ${active ? 'text-app-accent' : 'text-app-text'}`}>
+                      {tier.name}
+                    </span>
+                    <span className={`text-xs ${active ? 'text-app-accent/70' : 'text-app-text-muted'}`}>
+                      {tier.value}/week
+                    </span>
+                  </div>
+                  <p className="text-xs text-app-text-muted mt-0.5">{tier.description}</p>
+                </div>
+                {active && (
+                  <div className="w-5 h-5 rounded-full bg-app-accent flex items-center justify-center shrink-0">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                      <path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </div>
+                )}
+              </button>
+            )
+          })}
+
+          {/* Custom option */}
+          <button
+            onClick={handleCustomGoal}
+            className={`w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-left transition-all ${
+              showCustomInput
+                ? 'bg-app-accent/10 border border-app-accent/30'
+                : 'bg-app-hover/50 border border-transparent hover:border-app-border'
+            }`}
+          >
+            <span className="text-xl">✏️</span>
+            <div className="flex-1 min-w-0">
+              <span className={`text-sm font-medium ${showCustomInput ? 'text-app-accent' : 'text-app-text'}`}>
+                Custom
+              </span>
+              <p className="text-xs text-app-text-muted mt-0.5">Set your own number</p>
+            </div>
+            {showCustomInput && (
+              <div className="w-5 h-5 rounded-full bg-app-accent flex items-center justify-center shrink-0">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+            )}
+          </button>
+
+          {/* Custom input */}
+          {showCustomInput && (
+            <div className="flex gap-2 px-1">
+              <input
+                type="number"
+                min={5}
+                max={100}
+                value={customValue}
+                onChange={(e) => setCustomValue(e.target.value)}
+                onBlur={handleCustomSubmit}
+                onKeyDown={(e) => e.key === 'Enter' && handleCustomSubmit()}
+                className="flex-1 px-3 py-2.5 bg-app-bg border border-app-border rounded-xl text-sm text-app-text focus:outline-none focus:border-app-accent text-center"
+                placeholder="e.g. 25"
+              />
+              <span className="flex items-center text-xs text-app-text-muted">plants/week</span>
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Week start day */}
       <div className="bg-app-surface border border-app-border rounded-2xl p-4 space-y-3">

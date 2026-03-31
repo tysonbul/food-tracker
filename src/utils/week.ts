@@ -1,4 +1,4 @@
-import { FoodEntry, WeekSummary, getPointValue } from '../types'
+import { FoodEntry, WeekSummary, getPointValue, DEFAULT_GOAL } from '../types'
 import { deduplicateEntries } from './format'
 
 /**
@@ -46,6 +46,7 @@ export function formatWeekRange(weekStart: string, weekEnd: string): string {
 export function calculateWeekSummary(
   weekStart: string,
   entries: FoodEntry[],
+  goal: number = DEFAULT_GOAL,
 ): WeekSummary {
   const weekEnd = getWeekEnd(weekStart)
 
@@ -65,7 +66,7 @@ export function calculateWeekSummary(
     weekEnd,
     totalPoints,
     uniquePlantCount,
-    goalMet: totalPoints >= 30,
+    goalMet: totalPoints >= goal,
     entries,
   }
 }
@@ -115,6 +116,7 @@ export function getAllWeeks(
 export function calculateStreak(
   allEntries: FoodEntry[],
   weekStartDay: 0 | 1 = 1,
+  goal: number = DEFAULT_GOAL,
 ): { current: number; longest: number } {
   const weeks = getAllWeeks(allEntries, weekStartDay)
   if (weeks.length === 0) return { current: 0, longest: 0 }
@@ -122,7 +124,7 @@ export function calculateStreak(
   // Build summaries for all weeks
   const summaries = weeks.map((ws) => {
     const entries = getEntriesForWeek(allEntries, ws, weekStartDay)
-    return calculateWeekSummary(ws, entries)
+    return calculateWeekSummary(ws, entries, goal)
   })
 
   // Calculate longest streak

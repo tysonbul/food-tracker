@@ -1,12 +1,12 @@
 # Food Diversity Tracker
 
-A mobile-first PWA for tracking the diversity of plant foods you eat each week. The goal: **30+ different plants per week** to improve gut microbiome diversity, based on research from the American Gut Project.
+A mobile-first PWA for tracking the diversity of plant foods you eat each week to improve gut microbiome diversity, inspired by research from the American Gut Project.
 
-Built with React, TypeScript, Tailwind CSS, and Vite. All data is stored locally on your device via localStorage — no accounts, no servers.
+Built with React, TypeScript, Tailwind CSS, and Vite. All data is stored locally on your device via localStorage — no accounts, no servers, no tracking.
 
 ## How It Works
 
-Each unique plant food you log counts as **1 point**. Herbs and spices count as **¼ point** each. The target is 30 points per week.
+Each unique plant food you log counts as **1 point**. Herbs and spices count as **¼ point** each. The default goal is 30 points per week, but you can set your own target in Settings with friendly tiers (Seedling 20, Blooming 30, Thriving 40) or a custom value.
 
 ### What counts
 
@@ -24,19 +24,30 @@ Each unique plant food you log counts as **1 point**. Herbs and spices count as 
 
 ### Fermented foods
 
-Kimchi, sauerkraut, miso, and other fermented foods are tracked as a bonus category but don't contribute to the 30-plant score. They're recommended separately for adding beneficial bacteria.
+Kimchi, sauerkraut, miso, and other fermented foods are tracked as a bonus category but don't contribute to your plant score. They're recommended separately for adding beneficial bacteria.
 
 ## Features
 
 - **Progress ring** showing your weekly score with color-coded thresholds
+- **Configurable weekly goal** — choose a preset tier or set a custom target
 - **300+ built-in foods** organized by category, searchable and filterable
 - **Multi-select logging** — tap several foods at once after a meal
+- **Saved meals** — save common food combos and log them in one tap
 - **Custom foods** — add anything not in the database; it's remembered for next time
 - **Recent foods** — quickly re-log foods from previous weeks
 - **Weekly history** with streak tracking, averages, and per-week drill-down
-- **Data export/import** for backups (JSON)
+- **First-time welcome modal** with how-it-works guide and scoring breakdown
+- **Data export/import** for manual backups (JSON) — save to your cloud for safekeeping
 - **Offline support** — works without internet once installed as a PWA
 - **Configurable week start** — Monday (default) or Sunday
+
+## Data & Privacy
+
+All data lives in your browser's localStorage on your device. Nothing is sent to any server. This means:
+
+- Your data stays completely private
+- If you clear browser data or switch devices, your history is lost
+- **Back up regularly** — use Settings → Export JSON and save the file to iCloud, Google Drive, Dropbox, or wherever you keep important files. You can restore anytime via Import JSON.
 
 ## Development
 

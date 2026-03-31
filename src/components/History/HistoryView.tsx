@@ -19,13 +19,15 @@ export default function HistoryView() {
     [data.entries, data.settings.weekStartDay],
   )
 
+  const goal = data.settings.weeklyGoal
+
   const weekSummaries = useMemo(
     () =>
       weeks.map((ws) => {
         const entries = getEntriesForWeek(data.entries, ws, data.settings.weekStartDay)
-        return calculateWeekSummary(ws, entries)
+        return calculateWeekSummary(ws, entries, goal)
       }),
-    [weeks, data.entries, data.settings.weekStartDay],
+    [weeks, data.entries, data.settings.weekStartDay, goal],
   )
 
   const avgPoints = useMemo(
@@ -89,7 +91,7 @@ export default function HistoryView() {
       {/* Weeks at goal note */}
       {weeksAtGoal > 0 && (
         <p className="text-xs text-app-text-muted text-center">
-          Hit 30+ in {weeksAtGoal} of {weeks.length} week{weeks.length !== 1 ? 's' : ''}
+          Hit {goal}+ in {weeksAtGoal} of {weeks.length} week{weeks.length !== 1 ? 's' : ''}
         </p>
       )}
 
@@ -99,6 +101,7 @@ export default function HistoryView() {
           <WeekCard
             key={summary.weekStart}
             summary={summary}
+            goal={goal}
             isCurrent={summary.weekStart === currentWeekStart}
             onSelect={() => setSelectedWeek(summary.weekStart)}
           />

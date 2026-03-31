@@ -1,4 +1,4 @@
-import { Leaf, Scale, Flame, Ban, FlaskConical, X } from 'lucide-react'
+import { Leaf, Scale, Flame, Ban, FlaskConical, Smartphone, X } from 'lucide-react'
 import { CATEGORY_META, CATEGORY_ORDER } from '../data/foodDatabase'
 import { getPointValue } from '../types'
 
@@ -45,13 +45,13 @@ export default function WelcomeModal({ onClose }: WelcomeModalProps) {
           <div className="bg-app-accent/10 border border-app-accent/20 rounded-2xl p-5 space-y-2">
             <p className="text-sm font-medium text-app-accent">Your gut loves variety</p>
             <p className="text-sm text-app-text-secondary leading-relaxed">
-              Research shows that eating 30 or more different plant foods per week leads
+              Research shows that eating a wide variety of plant foods each week leads
               to a significantly more diverse gut microbiome — linked to better digestion,
               stronger immunity, and improved mental health.
             </p>
             <p className="text-sm text-app-text-secondary leading-relaxed">
-              This app helps you track how many unique plants you eat each week and hit that
-              30-plant goal.
+              This app helps you track how many unique plants you eat each week and hit your
+              weekly goal. You can adjust the target in Settings to match your pace.
             </p>
           </div>
 
@@ -136,7 +136,7 @@ export default function WelcomeModal({ onClose }: WelcomeModalProps) {
             </div>
             <p className="text-sm text-app-text-secondary leading-relaxed">
               Fermented foods like kimchi, sauerkraut, and kombucha are tracked as a bonus —
-              they don't count toward the 30-plant score, but they add beneficial live bacteria
+              they don't count toward your plant score, but they add beneficial live bacteria
               directly to your gut.
             </p>
           </div>
@@ -161,6 +161,27 @@ export default function WelcomeModal({ onClose }: WelcomeModalProps) {
               <p>
                 Check the <strong className="text-app-text">This Week</strong> tab anytime to
                 see your score and what you've eaten each day.
+              </p>
+            </div>
+          </div>
+
+          {/* Your data */}
+          <div className="bg-app-surface border border-app-border rounded-2xl p-5 space-y-3">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-amber-500/15 flex items-center justify-center">
+                <Smartphone size={16} className="text-amber-600" />
+              </div>
+              <h2 className="text-sm font-semibold text-app-text">Your Data</h2>
+            </div>
+            <div className="text-sm text-app-text-secondary leading-relaxed space-y-2">
+              <p>
+                All your data is stored locally on this device — nothing is sent to a server.
+                If you clear your browser data or switch devices, your history will be lost.
+              </p>
+              <p>
+                Use the <strong className="text-app-text">Export JSON</strong> option in Settings
+                to back up your data. Save the file to your cloud storage (iCloud, Google Drive, etc.)
+                so you can restore it anytime.
               </p>
             </div>
           </div>

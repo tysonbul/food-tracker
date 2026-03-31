@@ -132,13 +132,13 @@ export const FoodProvider: React.FC<{ children: React.ReactNode }> = ({ children
   )
 
   const currentWeekSummary = useMemo(
-    () => calculateWeekSummary(currentWeekStart, currentWeekEntries),
-    [currentWeekStart, currentWeekEntries],
+    () => calculateWeekSummary(currentWeekStart, currentWeekEntries, data.settings.weeklyGoal),
+    [currentWeekStart, currentWeekEntries, data.settings.weeklyGoal],
   )
 
   const streak = useMemo(
-    () => calculateStreak(data.entries, data.settings.weekStartDay),
-    [data.entries, data.settings.weekStartDay],
+    () => calculateStreak(data.entries, data.settings.weekStartDay, data.settings.weeklyGoal),
+    [data.entries, data.settings.weekStartDay, data.settings.weeklyGoal],
   )
 
   const totalUniquePlants = useMemo(

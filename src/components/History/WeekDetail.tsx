@@ -1,4 +1,5 @@
 import { WeekSummary } from '../../types'
+import { useFood } from '../../context/FoodContext'
 import { formatWeekRange } from '../../utils/week'
 import { ChevronLeft } from 'lucide-react'
 import ProgressRing from '../ProgressRing'
@@ -12,6 +13,9 @@ interface WeekDetailProps {
 }
 
 export default function WeekDetail({ summary, onBack, onDeleteEntry, isCurrent }: WeekDetailProps) {
+  const { data } = useFood()
+  const goal = data.settings.weeklyGoal
+
   return (
     <div className="p-5 max-w-lg mx-auto space-y-5">
       {/* Header */}
@@ -32,7 +36,7 @@ export default function WeekDetail({ summary, onBack, onDeleteEntry, isCurrent }
 
       {/* Ring */}
       <div className="bg-app-surface border border-app-border rounded-2xl p-6 flex justify-center">
-        <ProgressRing current={summary.totalPoints} goal={30} size={140} />
+        <ProgressRing current={summary.totalPoints} goal={goal} size={140} />
       </div>
 
       {/* Breakdown */}

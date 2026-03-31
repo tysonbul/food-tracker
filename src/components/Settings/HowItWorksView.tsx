@@ -1,12 +1,16 @@
-import { ChevronLeft, Leaf, Scale, Flame, Ban, FlaskConical } from 'lucide-react'
+import { ChevronLeft, Leaf, Scale, Flame, Ban, FlaskConical, Smartphone } from 'lucide-react'
 import { CATEGORY_META, CATEGORY_ORDER } from '../../data/foodDatabase'
 import { getPointValue } from '../../types'
+import { useFood } from '../../context/FoodContext'
 
 interface HowItWorksViewProps {
   onBack: () => void
 }
 
 export default function HowItWorksView({ onBack }: HowItWorksViewProps) {
+  const { data } = useFood()
+  const goal = data.settings.weeklyGoal
+
   return (
     <div className="p-5 max-w-lg mx-auto space-y-5 pb-6">
       <div className="flex items-center gap-3">
@@ -25,17 +29,17 @@ export default function HowItWorksView({ onBack }: HowItWorksViewProps) {
           <div className="w-8 h-8 rounded-lg bg-app-accent/15 flex items-center justify-center">
             <Leaf size={16} className="text-app-accent" />
           </div>
-          <h2 className="text-sm font-semibold text-app-text">The 30-Plant Goal</h2>
+          <h2 className="text-sm font-semibold text-app-text">The Plant Diversity Goal</h2>
         </div>
         <p className="text-sm text-app-text-secondary leading-relaxed">
           Research from the American Gut Project found that people who eat 30 or more
           different plant foods per week have significantly more diverse gut microbiomes
-          than those who eat fewer than 10.
+          than those who eat fewer than 10. But the relationship is a gradient — even
+          modest increases in variety help.
         </p>
         <p className="text-sm text-app-text-secondary leading-relaxed">
-          A diverse microbiome is linked to better digestion, stronger immunity, improved
-          mental health, and reduced inflammation. The more variety, the better — different
-          gut microbes thrive on different types of plant fiber.
+          Your current goal is <strong className="text-app-text">{goal} plants/week</strong>.
+          You can change this anytime in Settings.
         </p>
       </div>
 
@@ -109,8 +113,8 @@ export default function HowItWorksView({ onBack }: HowItWorksViewProps) {
         </div>
         <div className="text-sm text-app-text-secondary leading-relaxed space-y-2">
           <p>
-            Meat, fish, and dairy don't count toward the 30-plant goal. This isn't about
-            going vegan — you can eat meat and still aim for 30 plants. The count focuses
+            Meat, fish, and dairy don't count toward your plant goal. This isn't about
+            going vegan — you can eat meat and still hit your target. The count focuses
             specifically on plant diversity.
           </p>
           <p>
@@ -130,7 +134,7 @@ export default function HowItWorksView({ onBack }: HowItWorksViewProps) {
         </div>
         <p className="text-sm text-app-text-secondary leading-relaxed">
           Fermented foods like kimchi, sauerkraut, miso, and kombucha don't technically
-          count toward the 30-plant score. However, they're tracked as a bonus because
+          count toward your plant score. However, they're tracked as a bonus because
           they add beneficial live bacteria directly to your gut — complementing the
           fiber diversity from plants.
         </p>
@@ -138,7 +142,7 @@ export default function HowItWorksView({ onBack }: HowItWorksViewProps) {
 
       {/* Tips */}
       <div className="bg-app-surface border border-app-accent/20 rounded-2xl p-5 space-y-3">
-        <h2 className="text-sm font-semibold text-app-accent">Tips for Hitting 30</h2>
+        <h2 className="text-sm font-semibold text-app-accent">Tips for Hitting Your Goal</h2>
         <div className="text-sm text-app-text-secondary leading-relaxed space-y-2">
           <p>
             Use the <strong className="text-app-text">Meals</strong> feature to save common combos and
@@ -153,6 +157,27 @@ export default function HowItWorksView({ onBack }: HowItWorksViewProps) {
           </p>
           <p>
             Don't forget about your morning coffee or tea — they count too!
+          </p>
+        </div>
+      </div>
+
+      {/* Your data */}
+      <div className="bg-app-surface border border-app-border rounded-2xl p-5 space-y-3">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-lg bg-amber-500/15 flex items-center justify-center">
+            <Smartphone size={16} className="text-amber-600" />
+          </div>
+          <h2 className="text-sm font-semibold text-app-text">Your Data</h2>
+        </div>
+        <div className="text-sm text-app-text-secondary leading-relaxed space-y-2">
+          <p>
+            All your data is stored locally on this device — nothing is sent to a server.
+            If you clear your browser data or switch devices, your history will be lost.
+          </p>
+          <p>
+            Use the <strong className="text-app-text">Export JSON</strong> option in Settings
+            to back up your data regularly. Save the file to your cloud storage (iCloud, Google
+            Drive, Dropbox, etc.) so you can restore it later with <strong className="text-app-text">Import JSON</strong>.
           </p>
         </div>
       </div>

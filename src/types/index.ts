@@ -56,7 +56,11 @@ export interface Meal {
 export interface UserSettings {
   /** 0 = Sunday, 1 = Monday (default) */
   weekStartDay: 0 | 1
+  /** Weekly plant diversity goal (default 30) */
+  weeklyGoal: number
 }
+
+export const DEFAULT_GOAL = 30
 
 /** Summary for a given week */
 export interface WeekSummary {
@@ -68,7 +72,7 @@ export interface WeekSummary {
   totalPoints: number
   /** Number of unique plant foods (excluding fermented) */
   uniquePlantCount: number
-  /** Whether the 30-plant goal was met */
+  /** Whether the weekly plant goal was met */
   goalMet: boolean
   /** Entries for this week */
   entries: FoodEntry[]

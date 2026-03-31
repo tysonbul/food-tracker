@@ -6,13 +6,12 @@ import StreakBadge from './StreakBadge'
 import CategoryBreakdown from './CategoryBreakdown'
 import DailyView from './DailyView'
 
-const GOAL = 30
-
 type WeekTab = 'score' | 'daily'
 
 export default function ThisWeekView() {
   const { data, currentWeekStart, currentWeekSummary, streak, totalUniquePlants, deleteEntry } = useFood()
   const [tab, setTab] = useState<WeekTab>('score')
+  const goal = data.settings.weeklyGoal
 
   return (
     <div className="p-5 max-w-lg mx-auto space-y-5 pb-6">
@@ -26,7 +25,7 @@ export default function ThisWeekView() {
 
       {/* Progress ring + streak */}
       <div className="bg-app-surface border border-app-border rounded-2xl p-6 flex flex-col items-center gap-4">
-        <ProgressRing current={currentWeekSummary.totalPoints} goal={GOAL} />
+        <ProgressRing current={currentWeekSummary.totalPoints} goal={goal} />
         <StreakBadge current={streak.current} longest={streak.longest} />
 
         {/* Quick stats row */}

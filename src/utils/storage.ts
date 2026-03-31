@@ -1,4 +1,4 @@
-import { AppData } from '../types'
+import { AppData, DEFAULT_GOAL } from '../types'
 
 const STORAGE_KEY = 'food-tracker-v1'
 
@@ -8,6 +8,7 @@ const DEFAULT_DATA: AppData = {
   meals: [],
   settings: {
     weekStartDay: 1,
+    weeklyGoal: DEFAULT_GOAL,
   },
   version: 1,
 }
@@ -21,8 +22,9 @@ export const loadData = (): AppData => {
     if (!parsed.entries) parsed.entries = []
     if (!parsed.customFoods) parsed.customFoods = []
     if (!parsed.meals) parsed.meals = []
-    if (!parsed.settings) parsed.settings = { weekStartDay: 1 }
+    if (!parsed.settings) parsed.settings = { weekStartDay: 1, weeklyGoal: DEFAULT_GOAL }
     if (parsed.settings.weekStartDay === undefined) parsed.settings.weekStartDay = 1
+    if (!parsed.settings.weeklyGoal) parsed.settings.weeklyGoal = DEFAULT_GOAL
     return parsed
   } catch {
     return { ...DEFAULT_DATA, customFoods: [], entries: [], meals: [] }
