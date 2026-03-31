@@ -7,10 +7,12 @@ import MealsView from './components/Meals/MealsView'
 import SettingsView from './components/Settings/SettingsView'
 import LogEntryModal from './components/LogEntry/LogEntryModal'
 import PWAUpdatePrompt from './components/PWAUpdatePrompt'
+import WelcomeModal, { hasSeenWelcome } from './components/WelcomeModal'
 
 function AppContent() {
   const [view, setView] = useState<View>('thisweek')
   const [showLogModal, setShowLogModal] = useState(false)
+  const [showWelcome, setShowWelcome] = useState(() => !hasSeenWelcome())
 
   return (
     <>
@@ -20,6 +22,10 @@ function AppContent() {
         {view === 'meals' && <MealsView />}
         {view === 'settings' && <SettingsView />}
       </Layout>
+
+      {showWelcome && (
+        <WelcomeModal onClose={() => setShowWelcome(false)} />
+      )}
 
       {showLogModal && (
         <LogEntryModal
