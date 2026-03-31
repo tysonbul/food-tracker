@@ -30,6 +30,10 @@ function AppContent() {
       {showLogModal && (
         <LogEntryModal
           onClose={() => setShowLogModal(false)}
+          onSave={() => {
+            setShowLogModal(false)
+            setView('thisweek')
+          }}
           onCreateMeal={() => {
             setShowLogModal(false)
             setView('meals')

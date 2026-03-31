@@ -8,10 +8,11 @@ import AddCustomFood from './AddCustomFood'
 
 interface LogEntryModalProps {
   onClose: () => void
+  onSave?: () => void
   onCreateMeal?: () => void
 }
 
-export default function LogEntryModal({ onClose, onCreateMeal }: LogEntryModalProps) {
+export default function LogEntryModal({ onClose, onSave, onCreateMeal }: LogEntryModalProps) {
   const { data, currentWeekSummary, addEntries, addCustomFood } = useFood()
   const [selected, setSelected] = useState<Map<string, FoodItem>>(new Map())
   const [showCustom, setShowCustom] = useState(false)
@@ -98,7 +99,11 @@ export default function LogEntryModal({ onClose, onCreateMeal }: LogEntryModalPr
       }),
     )
     addEntries(entries)
-    onClose()
+    if (onSave) {
+      onSave()
+    } else {
+      onClose()
+    }
   }
 
   return (
